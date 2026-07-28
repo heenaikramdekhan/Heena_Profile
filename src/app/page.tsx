@@ -1,5 +1,6 @@
 import { Navbar } from '@/components/site/navbar';
 import { ScrollProgress } from '@/components/site/scroll-progress';
+import { SectionRail } from '@/components/site/section-rail';
 import { AmbientBackground } from '@/components/site/ambient-background';
 import { Hero } from '@/components/site/hero';
 import { About } from '@/components/site/about';
@@ -16,6 +17,7 @@ export default function Home() {
     <>
       <AmbientBackground />
       <ScrollProgress />
+      <SectionRail />
       <Navbar />
       <main>
         <Hero />
