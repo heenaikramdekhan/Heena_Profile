@@ -14,6 +14,23 @@ import { Section, Reveal } from './section';
 import { HoverLift, TiltCard } from './motion-primitives';
 import { Tag, TagRow } from './tag';
 
+/**
+ * Column span for a card, on the 6-track bento grid.
+ *
+ * Chosen so every band tiles the track exactly and never leaves a hole:
+ *   1 card  -> 6            (a lone card in a multi-column grid reads as a gap)
+ *   2 cards -> 3 + 3
+ *   3 cards -> 6 + 3 + 3    (lead card full width, two beside it)
+ *   4+      -> 2 each       (falls back to even thirds)
+ * Below `sm` everything is single column, so spans only apply from `sm` up.
+ */
+function spanFor(count: number, index: number) {
+  if (count === 1) return 'sm:col-span-6';
+  if (count === 2) return 'sm:col-span-3';
+  if (count === 3) return index === 0 ? 'sm:col-span-6' : 'sm:col-span-3';
+  return 'sm:col-span-3 lg:col-span-2';
+}
+
 export function SkillsSection() {
   const { skills } = getConfig();
 
@@ -139,19 +156,33 @@ export function SkillsSection() {
               </div>
             </Reveal>
 
-            {/* a lone card in a 2-col grid reads as a gap, so let it span */}
-            <div
-              className={
-                'grid gap-5 ' +
-                (band.groups.length === 1
-                  ? ''
-                  : band.groups.length === 2
-                    ? 'sm:grid-cols-2'
-                    : 'sm:grid-cols-2 lg:grid-cols-3')
-              }
-            >
+            {/*
+              Bento tiling on a 6-column track, applied inside each band rather
+              than across all seven groups at once.
+
+              Flattening the seven into one bento was the obvious reading of
+              the brief, and it is the wrong move here: the band headings (The
+              QA side / Where the two meet / The AI side) are the device that
+              carries the one-specialty positioning, and dissolving them to
+              make a prettier grid would trade the argument for decoration.
+              CLAUDE.md protects the keys, their order and the intersection
+              highlight, so all three survive untouched.
+
+              What varies is width. A three-card band leads with a full-width
+              card and puts the other two beside it, which gives the densest
+              list (10 tags) a row where its chips flow horizontally instead of
+              wrapping down a narrow column, and breaks the monotony of three
+              equal columns. Spans always tile the 6-track exactly, so no band
+              ends with a hole in it.
+            */}
+            <div className="grid gap-5 sm:grid-cols-6">
+              {/* span map: 1 group -> 6, 2 groups -> 3+3, 3 groups -> 6+3+3 */}
               {band.groups.map((group, i) => (
-                <Reveal key={group.label} delay={i * 0.04}>
+                <Reveal
+                  key={group.label}
+                  delay={i * 0.04}
+                  className={spanFor(band.groups.length, i)}
+                >
                   <HoverLift y={-3} className="h-full">
                   <TiltCard className="h-full">
                   <div

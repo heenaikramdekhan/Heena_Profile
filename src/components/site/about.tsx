@@ -5,6 +5,16 @@ import Image from 'next/image';
 import { MapPin, GraduationCap, Sparkles, Check, Bug, Bot } from 'lucide-react';
 import { getConfig } from '@/lib/config-loader';
 import { Section, Reveal } from './section';
+import { TextReveal } from './text-reveal';
+
+/**
+ * The line that joins the two halves. Lifted out of JSX verbatim so it can be
+ * passed to TextReveal as one string; the wording is unchanged. CLAUDE.md
+ * treats this sentence as load-bearing for the one-specialty positioning, so
+ * edit it only on purpose.
+ */
+const JOINING_LINE =
+  'Neither half is a side project. QA taught me to think like the user who ignores every instruction; AI engineering taught me to build systems that survive that user anyway.';
 
 export function About() {
   const { personal, education } = getConfig();
@@ -79,9 +89,10 @@ export function About() {
 
         {/* Right: bio + highlights */}
         <Reveal className="md:col-span-3" delay={0.1}>
-          <p className="text-foreground text-lg leading-relaxed">
-            {personal.bio}
-          </p>
+          <TextReveal
+            text={personal.bio}
+            className="text-foreground text-lg leading-relaxed"
+          />
 
           {/* the two halves, and the line that joins them */}
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -125,11 +136,10 @@ export function About() {
             ))}
           </div>
 
-          <p className="border-border text-muted-foreground mt-4 border-l-2 pl-4 text-sm leading-relaxed italic">
-            Neither half is a side project. QA taught me to think like the user
-            who ignores every instruction; AI engineering taught me to build
-            systems that survive that user anyway.
-          </p>
+          <TextReveal
+            text={JOINING_LINE}
+            className="border-border text-muted-foreground mt-4 border-l-2 pl-4 text-sm leading-relaxed italic"
+          />
 
           <div className="mt-8">
             <h3 className="text-muted-foreground font-mono text-xs font-medium tracking-widest uppercase">
