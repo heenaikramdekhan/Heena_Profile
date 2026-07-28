@@ -89,10 +89,10 @@ export function About() {
               <div
                 key={kicker}
                 className={
-                  'rounded-xl border p-5 ' +
+                  'card-glow-border rounded-xl border p-5 transition-shadow duration-300 hover:shadow-lg ' +
                   (tone === 'brand'
-                    ? 'border-brand/25 bg-brand/[0.04]'
-                    : 'border-accent2/25 bg-accent2/[0.04]')
+                    ? 'border-brand/25 bg-brand/[0.04] hover:shadow-brand/10'
+                    : 'border-accent2/25 bg-accent2/[0.04] hover:shadow-accent2/10')
                 }
               >
                 <div className="flex items-center gap-2.5">

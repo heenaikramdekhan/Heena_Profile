@@ -6,6 +6,8 @@ import { getConfig } from '@/lib/config-loader';
 import type { Discipline, Metric, Project, ProjectLink } from '@/types/portfolio';
 import { Section, Reveal } from './section';
 import { HoverLift } from './motion-primitives';
+import { githubPillClass, livePillClass } from './button-styles';
+import { Tag, TagRow } from './tag';
 
 type Filter = 'all' | 'qa' | 'ai';
 
@@ -68,7 +70,7 @@ function LinkButton({ link }: { link: ProjectLink }) {
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors"
+      className={isLive ? livePillClass() : githubPillClass()}
     >
       <Icon className="h-3.5 w-3.5" />
       {link.name}
@@ -104,7 +106,13 @@ function StatusBadge({ status }: { status: string }) {
 
 function StatBlock({ metric }: { metric: Metric }) {
   return (
-    <div className="border-border bg-background/50 rounded-lg border px-3 py-2">
+    // Metrics are the most persuasive thing on a card, so they get the
+    // accent-2 treatment (reserved for data) rather than the brand hover
+    // every other surface uses.
+    <div className="group/stat border-border bg-background/50 hover:border-accent2/45 hover:shadow-accent2/10 rounded-lg border px-3 py-2 transition-[transform,border-color,box-shadow] duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md">
+      {/* Deliberately no scale on the value: metric values here run long
+          ("Agent & retrieval layer", "Agents · RAG · vector search") and
+          scaling pushed them past the card edge. The lift carries the hover. */}
       <div className="text-accent2 font-mono text-sm font-semibold">
         {metric.value}
       </div>
@@ -127,7 +135,7 @@ function CaseStudyCard({ project }: { project: Project }) {
     : [];
 
   return (
-    <div className="group border-border bg-card hover:border-brand/40 hover:shadow-brand/10 overflow-hidden rounded-2xl border transition-[color,box-shadow,border-color] duration-300 hover:shadow-xl">
+    <div className="card-glow-border group border-border bg-card hover:shadow-brand/10 overflow-hidden rounded-2xl border transition-[color,box-shadow] duration-300 hover:shadow-xl">
       {/* header band */}
       <div className="border-border from-brand/15 relative border-b bg-gradient-to-br to-transparent p-6 md:p-8">
         <div className="bg-dot-grid mask-radial-faded absolute inset-0 opacity-30" />
@@ -185,16 +193,11 @@ function CaseStudyCard({ project }: { project: Project }) {
         )}
 
         <div className="border-border mt-6 flex flex-col gap-4 border-t pt-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-wrap gap-1.5">
+          <TagRow>
             {project.techStack.map((tech) => (
-              <span
-                key={tech}
-                className="bg-muted text-muted-foreground rounded-md px-2 py-0.5 text-xs font-medium"
-              >
-                {tech}
-              </span>
+              <Tag key={tech}>{tech}</Tag>
             ))}
-          </div>
+          </TagRow>
           {project.links.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {project.links.map((link) => (

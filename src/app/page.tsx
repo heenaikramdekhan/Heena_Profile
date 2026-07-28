@@ -1,4 +1,5 @@
 import { Navbar } from '@/components/site/navbar';
+import { ScrollProgress } from '@/components/site/scroll-progress';
 import { AmbientBackground } from '@/components/site/ambient-background';
 import { Hero } from '@/components/site/hero';
 import { About } from '@/components/site/about';
@@ -14,6 +15,7 @@ export default function Home() {
   return (
     <>
       <AmbientBackground />
+      <ScrollProgress />
       <Navbar />
       <main>
         <Hero />

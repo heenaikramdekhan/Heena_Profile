@@ -12,6 +12,7 @@ import {
 import { getConfig } from '@/lib/config-loader';
 import { Section, Reveal } from './section';
 import { HoverLift } from './motion-primitives';
+import { Tag, TagRow } from './tag';
 
 export function SkillsSection() {
   const { skills } = getConfig();
@@ -154,10 +155,10 @@ export function SkillsSection() {
                   <HoverLift y={-3} className="h-full">
                   <div
               className={
-                'h-full rounded-xl border p-5 transition-[color,border-color,box-shadow] duration-300 ' +
+                'card-glow-border h-full rounded-xl border p-5 transition-[box-shadow] duration-300 hover:shadow-lg ' +
                 (group.highlight
-                  ? 'border-accent2/40 bg-accent2/[0.04] hover:border-accent2/70 hover:shadow-accent2/10 hover:shadow-lg'
-                  : 'border-border bg-card hover:border-brand/45 hover:shadow-brand/10 hover:shadow-lg')
+                  ? 'border-accent2/40 bg-accent2/[0.04] hover:shadow-accent2/10'
+                  : 'border-border bg-card hover:shadow-brand/10')
               }
             >
               <div className="flex items-center gap-2.5">
@@ -185,16 +186,15 @@ export function SkillsSection() {
                 {group.evidence}
               </p>
 
-              <div className="mt-4 flex flex-wrap gap-1.5">
+              {/* The intersection card carries the accent tone, so its tags
+                  read as the differentiator rather than more of the same. */}
+              <TagRow className="mt-4">
                 {group.items.map((skill) => (
-                  <span
-                    key={skill}
-                    className="border-border text-foreground/80 rounded-md border px-2 py-1 text-xs font-medium"
-                  >
+                  <Tag key={skill} tone={group.highlight ? 'accent' : 'default'}>
                     {skill}
-                  </span>
+                  </Tag>
                 ))}
-              </div>
+              </TagRow>
                   </div>
                   </HoverLift>
                 </Reveal>

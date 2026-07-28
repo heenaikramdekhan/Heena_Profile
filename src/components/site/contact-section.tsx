@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowUpRight,
   Github,
@@ -15,6 +16,7 @@ import {
 } from 'lucide-react';
 import { getConfig } from '@/lib/config-loader';
 import { Section, Reveal } from './section';
+import { primaryButtonClass, secondaryButtonClass } from './button-styles';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -26,6 +28,7 @@ const inputClass =
 function ContactForm() {
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
+  const reduce = useReducedMotion();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -69,7 +72,13 @@ function ContactForm() {
 
   if (status === 'success') {
     return (
-      <div role="status" className="flex h-full flex-col items-center justify-center gap-3 py-10 text-center">
+      <motion.div
+        role="status"
+        initial={reduce ? undefined : { opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="flex h-full flex-col items-center justify-center gap-3 py-10 text-center"
+      >
         <span className="bg-emerald-500/12 text-emerald-600 dark:text-emerald-400 flex h-12 w-12 items-center justify-center rounded-full">
           <CheckCircle2 className="h-6 w-6" />
         </span>
@@ -84,7 +93,7 @@ function ContactForm() {
         >
           Send another
         </button>
-      </div>
+      </motion.div>
     );
   }
 
@@ -119,16 +128,23 @@ function ContactForm() {
       </div>
 
       {status === 'error' && error && (
-        <p role="alert" aria-live="polite" className="text-destructive flex items-start gap-1.5 text-sm">
+        <motion.p
+          role="alert"
+          aria-live="polite"
+          initial={reduce ? undefined : { x: 0 }}
+          animate={reduce ? undefined : { x: [0, -6, 6, -4, 4, 0] }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+          className="text-destructive flex items-start gap-1.5 text-sm"
+        >
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
           {error}
-        </p>
+        </motion.p>
       )}
 
       <button
         type="submit"
         disabled={status === 'submitting'}
-        className="bg-foreground text-background hover:bg-foreground/90 inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 disabled:opacity-60"
+        className={primaryButtonClass('w-full sm:w-auto')}
       >
         {status === 'submitting' ? (
           <>
@@ -177,7 +193,7 @@ export function ContactSection() {
       <Reveal>
         <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
           {/* form */}
-          <div className="border-border bg-card rounded-2xl border p-6 md:p-8">
+          <div className="card-glow-border border-border bg-card rounded-2xl border p-6 md:p-8">
             <h3 className="text-foreground text-lg font-semibold tracking-tight">
               Send a message
             </h3>
@@ -195,9 +211,9 @@ export function ContactSection() {
                 href={href}
                 target={href.startsWith('mailto:') ? undefined : '_blank'}
                 rel="noopener noreferrer"
-                className="group border-border bg-card hover:border-foreground/20 flex items-center gap-3 rounded-xl border px-4 py-3.5 transition-colors"
+                className="card-glow-border group border-border bg-card hover:-translate-y-0.5 hover:shadow-brand/10 flex items-center gap-3 rounded-xl border px-4 py-3.5 transition-all duration-300 hover:shadow-lg"
               >
-                <span className="border-border text-muted-foreground group-hover:text-foreground flex h-9 w-9 shrink-0 items-center justify-center rounded-md border transition-colors">
+                <span className="border-border text-muted-foreground group-hover:border-brand/40 group-hover:text-foreground flex h-9 w-9 shrink-0 items-center justify-center rounded-md border transition-colors">
                   <Icon className="h-4 w-4" />
                 </span>
                 <span className="min-w-0">
@@ -212,7 +228,7 @@ export function ContactSection() {
               href={resume.downloadUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="border-border bg-card hover:border-foreground/20 mt-1 inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition-colors"
+              className={secondaryButtonClass('mt-1 rounded-xl py-3')}
             >
               <FileDown className="h-4 w-4" />
               Download résumé

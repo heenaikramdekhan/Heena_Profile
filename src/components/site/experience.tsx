@@ -2,6 +2,7 @@
 
 import { getConfig } from '@/lib/config-loader';
 import { Section, Reveal } from './section';
+import { Tag, TagRow } from './tag';
 
 function companyInitial(company: string) {
   return company.trim()[0]?.toUpperCase() ?? '';
@@ -31,7 +32,7 @@ export function Experience() {
                   <span className="border-brand/50 absolute inset-0 rounded-xl border" />
                 </span>
 
-                <div className="border-border bg-card hover:border-foreground/20 min-w-0 flex-1 rounded-xl border p-5 transition-colors md:p-6">
+                <div className="card-glow-border border-border bg-card min-w-0 flex-1 rounded-xl border p-5 transition-shadow duration-300 hover:shadow-lg hover:shadow-brand/10 md:p-6">
                   <div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between">
                     <h3 className="text-foreground text-lg font-semibold">
                       {role.position}
@@ -50,16 +51,11 @@ export function Experience() {
                     {role.description}
                   </p>
 
-                  <div className="mt-4 flex flex-wrap gap-1.5">
+                  <TagRow className="mt-4">
                     {role.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="border-border text-muted-foreground rounded-md border px-2 py-0.5 text-xs font-medium"
-                      >
-                        {tech}
-                      </span>
+                      <Tag key={tech}>{tech}</Tag>
                     ))}
-                  </div>
+                  </TagRow>
                 </div>
               </div>
             </Reveal>

@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { FileDown, Menu, X } from 'lucide-react';
+import { FileDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getConfig } from '@/lib/config-loader';
 import { ThemeToggle } from './theme-toggle';
+import { primaryButtonClass } from './button-styles';
 
 const NAV_LINKS = [
   { label: 'About', href: '#about' },
@@ -103,7 +104,7 @@ export function Navbar() {
             href={config.resume.downloadUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-foreground text-background hover:bg-foreground/90 hidden items-center gap-1.5 rounded-md px-3.5 py-2 text-sm font-medium transition-colors sm:inline-flex"
+            className={primaryButtonClass('hidden px-3.5 py-2 sm:inline-flex')}
           >
             <FileDown className="h-4 w-4" />
             Resume
@@ -111,10 +112,30 @@ export function Navbar() {
           <button
             type="button"
             aria-label="Toggle menu"
+            aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="border-border text-muted-foreground hover:text-foreground inline-flex h-9 w-9 items-center justify-center rounded-md border md:hidden"
+            className="border-border text-muted-foreground hover:text-foreground hover:border-brand/40 relative inline-flex h-9 w-9 items-center justify-center rounded-md border transition-colors md:hidden"
           >
-            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            <span className="relative flex h-4 w-4 items-center justify-center">
+              <motion.span
+                animate={reduce ? undefined : { rotate: open ? 45 : 0, y: open ? 0 : -4 }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="bg-current absolute h-0.5 w-4 rounded-full"
+                style={reduce ? { transform: open ? 'rotate(45deg)' : 'translateY(-4px)' } : undefined}
+              />
+              <motion.span
+                animate={reduce ? undefined : { opacity: open ? 0 : 1 }}
+                transition={{ duration: 0.15 }}
+                className="bg-current absolute h-0.5 w-4 rounded-full"
+                style={reduce ? { opacity: open ? 0 : 1 } : undefined}
+              />
+              <motion.span
+                animate={reduce ? undefined : { rotate: open ? -45 : 0, y: open ? 0 : 4 }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="bg-current absolute h-0.5 w-4 rounded-full"
+                style={reduce ? { transform: open ? 'rotate(-45deg)' : 'translateY(4px)' } : undefined}
+              />
+            </span>
           </button>
         </div>
       </nav>
@@ -130,22 +151,25 @@ export function Navbar() {
             className="border-border bg-background/95 overflow-hidden border-b backdrop-blur-md md:hidden"
           >
             <div className="mx-auto flex max-w-5xl flex-col gap-1 px-6 py-4">
-              {NAV_LINKS.map((link) => (
-                <a
+              {NAV_LINKS.map((link, i) => (
+                <motion.a
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
+                  initial={reduce ? undefined : { opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: reduce ? 0 : 0.3, delay: reduce ? 0 : i * 0.04, ease: [0.16, 1, 0.3, 1] }}
                   className="text-muted-foreground hover:text-foreground hover:bg-accent rounded-md px-3 py-2.5 text-sm font-medium transition-colors"
                 >
                   {link.label}
-                </a>
+                </motion.a>
               ))}
               <a
                 href={config.resume.downloadUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="bg-foreground text-background mt-2 inline-flex items-center justify-center gap-1.5 rounded-md px-3.5 py-2.5 text-sm font-medium"
+                className={primaryButtonClass('mt-2')}
               >
                 <FileDown className="h-4 w-4" />
                 Download Resume

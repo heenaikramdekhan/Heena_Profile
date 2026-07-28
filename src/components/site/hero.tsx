@@ -9,8 +9,9 @@ import {
   useTransform,
   Variants,
 } from 'framer-motion';
-import { ArrowUpRight, Github, Linkedin, Mail, FileDown } from 'lucide-react';
+import { ArrowUpRight, ChevronDown, Github, Linkedin, Mail, FileDown } from 'lucide-react';
 import { getConfig } from '@/lib/config-loader';
+import { primaryButtonClass, secondaryButtonClass, quietButtonClass, iconButtonClass } from './button-styles';
 
 /* -------------------------------------------------------------------------- */
 /*  Signature element: the same AI system seen through two lenses.            */
@@ -248,6 +249,27 @@ export function Hero() {
   const { personal, social, resume } = getConfig();
   const reduce = useReducedMotion();
 
+  // Whole-block parallax: the text column drifts a few px opposite the
+  // cursor. Deliberately tiny (max ~6px) — this is a premium-feeling nudge,
+  // not the tilt effect already carried by SystemGraph.
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const spx = useSpring(px, { stiffness: 60, damping: 20, mass: 0.6 });
+  const spy = useSpring(py, { stiffness: 60, damping: 20, mass: 0.6 });
+  const parallaxX = useTransform(spx, [-0.5, 0.5], [6, -6]);
+  const parallaxY = useTransform(spy, [-0.5, 0.5], [4, -4]);
+
+  function handleSectionMove(e: React.PointerEvent<HTMLElement>) {
+    if (reduce) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    px.set((e.clientX - rect.left) / rect.width - 0.5);
+    py.set((e.clientY - rect.top) / rect.height - 0.5);
+  }
+  function handleSectionLeave() {
+    px.set(0);
+    py.set(0);
+  }
+
   const container: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -273,6 +295,8 @@ export function Hero() {
   return (
     <section
       id="home"
+      onPointerMove={handleSectionMove}
+      onPointerLeave={handleSectionLeave}
       className="relative flex min-h-[92vh] items-center overflow-hidden"
     >
       {/* Background lives in AmbientBackground now, page-wide. Adding local
@@ -284,7 +308,7 @@ export function Hero() {
         className="relative mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 px-6 pt-24 pb-12 lg:grid-cols-[1.05fr_0.95fr]"
       >
         {/* ---- left: positioning ---- */}
-        <div>
+        <motion.div style={reduce ? undefined : { x: parallaxX, y: parallaxY }}>
           <motion.div variants={item}>
             <span className="border-border bg-background/60 text-muted-foreground inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium backdrop-blur-sm">
               <span className="relative flex h-2 w-2">
@@ -335,24 +359,18 @@ export function Hero() {
             variants={item}
             className="mt-7 flex flex-wrap items-center gap-3"
           >
-            <a
-              href="#projects"
-              className="bg-foreground text-background hover:bg-foreground/90 inline-flex items-center gap-1.5 rounded-md px-5 py-2.5 text-sm font-medium transition-colors"
-            >
+            <a href="#projects" className={primaryButtonClass()}>
               View my work
               <ArrowUpRight className="h-4 w-4" />
             </a>
-            <a
-              href="#contact"
-              className="border-border hover:bg-accent inline-flex items-center gap-1.5 rounded-md border px-5 py-2.5 text-sm font-medium transition-colors"
-            >
+            <a href="#contact" className={secondaryButtonClass()}>
               Get in touch
             </a>
             <a
               href={resume.downloadUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 rounded-md px-3 py-2.5 text-sm font-medium transition-colors"
+              className={quietButtonClass()}
             >
               <FileDown className="h-4 w-4" />
               Resume
@@ -368,7 +386,7 @@ export function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 inline-flex h-10 w-10 items-center justify-center rounded-md border transition-colors"
+                className={iconButtonClass()}
               >
                 <Icon className="h-4 w-4" />
               </a>
@@ -378,20 +396,40 @@ export function Hero() {
                 href={social.liveProduct}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 ml-1 inline-flex h-10 items-center gap-1.5 rounded-md border px-3 text-sm font-medium transition-colors"
+                className={secondaryButtonClass('ml-1 h-10 px-3 py-0')}
               >
                 {social.liveProduct.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
             )}
           </motion.div>
-        </div>
+        </motion.div>
 
         {/* ---- right: signature element (hidden on small screens, degrades gracefully) ---- */}
         <motion.div variants={item} className="hidden lg:block">
           <SystemGraph />
         </motion.div>
       </motion.div>
+
+      {/* scroll indicator — fades out once the visitor starts scrolling */}
+      {!reduce && (
+        <motion.a
+          href="#about"
+          aria-label="Scroll to About section"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1, duration: 0.6 }}
+          className="text-muted-foreground hover:text-foreground absolute inset-x-0 bottom-6 mx-auto flex w-fit flex-col items-center gap-1.5 transition-colors"
+        >
+          <span className="font-mono text-[10px] tracking-widest uppercase">Scroll</span>
+          <motion.span
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <ChevronDown className="h-4 w-4" />
+          </motion.span>
+        </motion.a>
+      )}
     </section>
   );
 }

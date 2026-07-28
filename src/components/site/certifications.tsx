@@ -25,8 +25,8 @@ function Card({ cert }: { cert: Certification }) {
   const inner = (
     <div
       className={
-        'border-border bg-card group/cert flex flex-col overflow-hidden rounded-xl border transition-[border-color,box-shadow] duration-300 ' +
-        (linked ? 'hover:border-brand/45 hover:shadow-brand/10 hover:shadow-lg' : '')
+        'border-border bg-card group/cert flex flex-col overflow-hidden rounded-xl border transition-[box-shadow] duration-300 ' +
+        (linked ? 'card-glow-border hover:shadow-brand/10 hover:shadow-lg' : '')
       }
     >
       {/* Only rendered when there's an actual scan. An earlier version

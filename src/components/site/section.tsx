@@ -36,6 +36,31 @@ export function Reveal({
   );
 }
 
+/**
+ * Hairline that draws itself out from the eyebrow as the section arrives.
+ * Animates `scaleX` only, so it costs no layout. Rendered as a static full
+ * width rule under prefers-reduced-motion rather than dropped, because it is
+ * doing visual work (separating the eyebrow from the page) beyond the motion.
+ */
+function HeadingRule() {
+  const reduce = useReducedMotion();
+
+  if (reduce) {
+    return <span className="via-border h-px flex-1 bg-gradient-to-r from-brand/40 to-transparent" />;
+  }
+
+  return (
+    <motion.span
+      aria-hidden
+      initial={{ scaleX: 0, opacity: 0 }}
+      whileInView={{ scaleX: 1, opacity: 1 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+      className="via-border h-px flex-1 origin-left bg-gradient-to-r from-brand/40 to-transparent"
+    />
+  );
+}
+
 interface SectionProps {
   id: string;
   index: string;
@@ -62,9 +87,12 @@ export function Section({
       <div className="mx-auto max-w-5xl px-6">
         <Reveal>
           <div className="mb-10 md:mb-14">
-            <span className="text-brand font-mono text-xs font-medium tracking-widest uppercase">
-              {index} / {title}
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-brand shrink-0 font-mono text-xs font-medium tracking-widest uppercase">
+                {index} / {title}
+              </span>
+              <HeadingRule />
+            </div>
             <h2 className="text-foreground mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
               {title}
             </h2>

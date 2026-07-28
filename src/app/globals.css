@@ -279,6 +279,44 @@ body:has([data-ai-overlay="open"]) {
   will-change: transform, opacity;
 }
 
+/* ------------------------------------------------------------------ */
+/*  Card border-glow — one class, added alongside a card's existing     */
+/*  classes. Draws a 1px gradient ring using mask-composite so it never */
+/*  needs an extra wrapper div or to touch a card's existing padding/   */
+/*  border/overflow rules. Off by default; fades in on hover/focus.     */
+/*  Respects reduced-motion via the transition-duration net below.      */
+/* ------------------------------------------------------------------ */
+.card-glow-border {
+  position: relative;
+  isolation: isolate;
+}
+.card-glow-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--brand) 65%, transparent),
+    transparent 45%,
+    color-mix(in oklab, var(--accent-2) 55%, transparent)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.card-glow-border:hover::before,
+.card-glow-border:focus-within::before {
+  opacity: 1;
+}
+
 /* Sparingly-used glass surface for hierarchy, not decoration */
 .glass {
   background-color: color-mix(in oklab, var(--card) 72%, transparent);
