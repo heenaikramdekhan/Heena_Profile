@@ -1,0 +1,25 @@
+{
+  "name": "Heena, QA Engineer and AI Engineer",
+  "short_name": "Heena",
+  "description": "Software QA Engineer and AI Engineer. Adversarial testing and LLM evaluation, plus the multi-agent and RAG systems behind them.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08080b",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "categories": ["portfolio", "developer tools"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32",
+      "type": "image/x-icon",
+      "purpose": "any"
+    }
+  ],
+  "scope": "/",
+  "id": "heena-portfolio",
+  "related_applications": [],
+  "prefer_related_applications": false
+}

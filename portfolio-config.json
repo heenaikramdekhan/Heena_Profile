@@ -1,0 +1,514 @@
+{
+  "personal": {
+    "name": "Heena",
+    "location": "Islamabad, Pakistan · Open to remote",
+    "title": "Software QA Engineer and AI Engineer",
+    "tagline": "I break AI systems before your users do, then build the ones that don't break.",
+    "proofPoint": "I hold two roles right now: QA Engineer at SageTeck and AI Engineer at SkilliHire. In the same week I'll stress-test an AI system and build one. Before this I kept a CRM/ATS platform stable for 10,000+ users at RecruitBPM.",
+    "email": "hina.ikram588@gmail.com",
+    "phone": "+92 318 153 9080",
+    "handle": "@heenaikram",
+    "bio": "I've broken voice assistants mid-sentence, killed CRM logins on a bad connection on purpose, and thrown enough garbage data at a chatbot to watch it forget what year it is. That's not chaos. That's Tuesday. It's also how I built a QA career: assume the app is guilty until proven innocent. Somewhere along the way, \"find what's broken\" turned into \"build what doesn't break.\" I'm a Software QA Engineer at SageTeck, where I own the quality gate for web and mobile releases. I'm also an AI Engineer at SkilliHire, designing multi-agent systems, RAG pipelines, and vector search backends. Built for production, not demo day. The two sides feed each other. QA taught me to think like the user who ignores every instruction. AI engineering taught me to build systems that survive that user anyway.",
+    "avatar": "/profile.jpeg",
+    "fallbackAvatar": "/avatar-placeholder.png"
+  },
+  "education": {
+    "current": {
+      "degree": "B.S. in Computer Science",
+      "institution": "National University of Sciences and Technology (NUST)",
+      "duration": "2020 to 2024",
+      "cgpa": "",
+      "graduationDate": "November 2024"
+    },
+    "previous": {
+      "degree": "Intermediate, Pre-Engineering",
+      "institution": "Aga Khan Higher Secondary School, Hunza",
+      "duration": "2014 to 2019"
+    },
+    "achievements": [
+      "I hold a QA role and an AI engineering role at the same time, so I test AI systems and build them in the same sprint",
+      "Own the quality gate for TalkerCRM, a natural-language voice CRM, and for a live credit platform running real financial workflows",
+      "Use AI to generate large-scale adversarial datasets, then fire them at voice and conversational systems to see what falls over",
+      "Kept a B2B recruitment CRM/ATS stable for 10,000+ users across every release at RecruitBPM",
+      "Built a RAG service with hybrid retrieval, reranking, and citations the model can't skip, so an unsupported answer has nowhere to hide",
+      "PoseMate, my final year project, placed third in the NUST CS department: a CNN posture model at 95% accuracy on 20,000 images"
+    ]
+  },
+  "_certificationsHowTo": "Add entries below. Only name and kind are required. kind is either 'technical' or 'volunteering'. Fill issuer, date, url (the verify/credential link), image, and includes (component courses, for a specialization) when you have them; each renders only if present. Save certificate scans to public/certificates/ and point image at e.g. /certificates/my-cert.png; landscape works best and anything from ~1.4:1 to ~1.9:1 fits the panel without noticeable letterboxing. For Coursera, the certificate image can be pulled straight from https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE~CODE/CERTIFICATE_LANDING_PAGE~CODE.jpeg where CODE is the verify code (1772x928). Udemy is the same idea at https://udemy-certificate.s3.amazonaws.com/image/UC-xxxx.jpg where UC-xxxx is the certificate number (1600x1190, so it letterboxes slightly in the 16/10 panel). Both are plain S3 and are not behind the bot protection the parent sites use, so a verify or certificate URL is all that's needed. Bright Network renders its certificate in HTML rather than serving a file, and the page sits behind Cloudflare, so that one has to be saved from a browser by hand. Delete this note when you're done.",
+  "certifications": [
+    {
+      "name": "The AI Engineer Course 2026: Complete AI Engineer Bootcamp",
+      "issuer": "365 Careers · Udemy",
+      "date": "July 2026",
+      "url": "https://www.udemy.com/certificate/UC-333ce491-244f-4a25-a4d7-e7f8d3968504/",
+      "image": "/certificates/the-ai-engineer-course-2026.jpg",
+      "kind": "technical"
+    },
+    {
+      "name": "Machine Learning Specialization",
+      "issuer": "Stanford University & DeepLearning.AI · Coursera",
+      "date": "July 2026",
+      "url": "https://www.coursera.org/account/accomplishments/specialization/FVDCIQ8IKJZN",
+      "image": "/certificates/machine-learning-specialization.jpeg",
+      "includes": [
+        "Supervised Machine Learning: Regression and Classification",
+        "Advanced Learning Algorithms",
+        "Unsupervised Learning, Recommenders, Reinforcement Learning"
+      ],
+      "kind": "technical"
+    },
+    {
+      "name": "Supervised Machine Learning: Regression and Classification",
+      "issuer": "Stanford University & DeepLearning.AI · Coursera",
+      "date": "July 2026",
+      "url": "https://www.coursera.org/account/accomplishments/verify/VQL686UNWW5G",
+      "image": "/certificates/supervised-machine-learning-regression-and-classification.jpeg",
+      "kind": "technical"
+    },
+    {
+      "name": "Advanced Learning Algorithms",
+      "issuer": "Stanford University & DeepLearning.AI · Coursera",
+      "date": "July 2026",
+      "url": "https://www.coursera.org/account/accomplishments/verify/S9Y6T6OH3ZYG",
+      "image": "/certificates/advanced-learning-algorithms.jpeg",
+      "kind": "technical"
+    },
+    {
+      "name": "Unsupervised Learning, Recommenders, Reinforcement Learning",
+      "issuer": "Stanford University & DeepLearning.AI · Coursera",
+      "date": "July 2026",
+      "url": "https://www.coursera.org/account/accomplishments/verify/8WC1IKU0NVNX",
+      "image": "/certificates/unsupervised-learning-recommenders-reinforcement-learning.jpeg",
+      "kind": "technical"
+    },
+    {
+      "name": "The Expert's Secret to Mobile Application Testing [2025]",
+      "issuer": "Saif Siddiqui · Udemy",
+      "date": "August 2025",
+      "url": "https://www.udemy.com/certificate/UC-f3bddc74-88ee-43e6-ac24-2bff9856504a/",
+      "image": "/certificates/mobile-application-testing.jpg",
+      "kind": "technical"
+    },
+    {
+      "name": "IEUK 2024: Technology",
+      "issuer": "Bright Network · Internship Experience UK",
+      "date": "June 2024",
+      "url": "https://www.brightnetwork.co.uk/certificates/ieuk-2024-technology_gfspqfxngma0mu/",
+      "image": "/certificates/ieuk-2024-technology.png",
+      "kind": "technical"
+    },
+    {
+      "name": "Python for Data Science, AI & Development",
+      "issuer": "IBM · Coursera",
+      "date": "March 2023",
+      "url": "https://www.coursera.org/account/accomplishments/certificate/YHFFYF5GSUC9",
+      "image": "/certificates/python-for-data-science-ai-development.jpeg",
+      "kind": "technical"
+    },
+    {
+      "name": "Python Basics for Data Science Bootcamp",
+      "issuer": "AI Planet (formerly DPhi)",
+      "date": "August 2022",
+      "url": "https://aiplanet.com/bootcamp/certificate/verify/8942e63f-2fe4-4abc-9a4a-a37ade17df43",
+      "image": "/certificates/python-basics-for-data-science-bootcamp.png",
+      "kind": "technical"
+    },
+    {
+      "name": "What is Data Science?",
+      "issuer": "IBM · Coursera",
+      "date": "April 2022",
+      "url": "https://www.coursera.org/account/accomplishments/verify/JB969P3T5XJE",
+      "image": "/certificates/what-is-data-science.jpeg",
+      "kind": "technical"
+    }
+  ],
+  "experience": [
+    {
+      "company": "SkilliHire",
+      "position": "AI Engineer",
+      "type": "Full-time",
+      "duration": "May 2026 to Present · Remote",
+      "description": "I work on multi-agent AI systems, retrieval-augmented generation pipelines, and vector search backends meant to run in production rather than sit in a notebook. Mostly LangGraph, LangChain, and modern LLMs, wired into frontends people actually use. I help build the ngedu.ai learning platform alongside the core engineering team. Spending the rest of my week in QA changes how I approach it: I want agent flows that handle the failure cases first, so empty retrievals, tool timeouts, and adversarial prompts are dealt with up front instead of patched in after a demo goes sideways.",
+      "technologies": ["LangGraph", "LangChain", "LLMs", "RAG", "Multi-Agent Systems", "Vector Search", "Python", "ReactJS"]
+    },
+    {
+      "company": "SageTeck",
+      "position": "Software Quality Assurance Engineer",
+      "type": "Full-time",
+      "duration": "June 2025 to Present · Islamabad, Pakistan",
+      "description": "I own the quality gate for web and mobile releases across AI products, SuiteCRM, and custom full-stack builds. That covers TalkerCRM (an AI voice and chatbot CRM), Sigla Credit (a financial system with heavy API integration), Route Planner, and Bizzotto CRM. Day to day I design exploratory and regression test plans, validate APIs with Postman, and maintain automated regression suites in Selenium WebDriver and Applitools. I build test cases straight from component diagrams, sequence diagrams, Swagger docs, and user workflows rather than from intuition. I also run performance and stress testing for high-volume email and SMS campaigns, and I log defects in Jira with steps clear enough that nobody has to ask me twice.",
+      "technologies": ["Selenium WebDriver", "Applitools", "Postman", "Jira", "Model-Based Testing", "API Testing", "Mobile Testing", "SuiteCRM", "Twilio"]
+    },
+    {
+      "company": "RecruitBPM",
+      "position": "Software Quality Assurance Engineer",
+      "type": "Full-time",
+      "duration": "July 2024 to June 2025 · Islamabad, Pakistan",
+      "description": "Led manual and regression testing for a B2B recruitment ATS/CRM used by large companies, keeping it reliable for 10,000+ users on web and mobile. I validated REST APIs, ran functional, regression, and exploratory suites every release, and maintained manual test cases in TestRail for the key flows and their edge cases. I cut bug-resolution time by tightening our Jira and ClickUp workflow, and worked directly with developers to catch problems early rather than at the end.",
+      "technologies": ["Manual Testing", "Regression Testing", "Exploratory Testing", "REST APIs", "TestRail", "Jira", "ClickUp", "Trello"]
+    }
+  ],
+  "skills": {
+    "qa_engineering": [
+      "Manual Testing",
+      "Functional Testing (Smoke, Sanity, UI, E2E)",
+      "Regression Testing",
+      "Exploratory Testing",
+      "API & Integration Testing",
+      "User Acceptance Testing (UAT)",
+      "Mobile Testing (iOS & Android)",
+      "Cross-Browser Testing",
+      "Model-Based Testing",
+      "Performance & Stress Testing"
+    ],
+    "qa_process": [
+      "Software Testing Life Cycle (STLC)",
+      "Agile Scrum",
+      "Requirement Analysis",
+      "Test Planning & Execution",
+      "Test Case Design",
+      "Defect Lifecycle Management",
+      "Defect Reporting & Tracking",
+      "REST API Validation",
+      "Production Release Verification",
+      "Cross-functional Collaboration"
+    ],
+    "ai_quality": [
+      "LLM Output Validation",
+      "Adversarial & Red-Team Probing",
+      "Hallucination & Grounding Checks",
+      "Synthetic Test-Data Generation",
+      "Voice & Conversational Stress Testing",
+      "Non-Deterministic System Evaluation",
+      "AI-Assisted Defect Prediction"
+    ],
+    "ai_engineering": [
+      "LangGraph",
+      "LangChain",
+      "RAG Pipelines",
+      "Multi-Agent Systems",
+      "Vector Search",
+      "Hybrid Retrieval & Reranking",
+      "LLMs",
+      "Prompt Engineering"
+    ],
+    "test_automation": [
+      "Selenium WebDriver",
+      "Applitools (Visual AI)",
+      "Postman",
+      "PHPUnit",
+      "TestRail",
+      "Automated Regression Suites",
+      "Swagger / OpenAPI"
+    ],
+    "languages_frameworks": [
+      "Python",
+      "JavaScript",
+      "C++",
+      "ReactJS",
+      "TensorFlow",
+      "PyTorch",
+      "SQL"
+    ],
+    "platforms_tools": [
+      "Jira",
+      "ClickUp",
+      "Trello",
+      "Asana",
+      "Git / GitHub",
+      "MySQL",
+      "SuiteCRM",
+      "Twilio",
+      "Slack"
+    ]
+  },
+  "projects": [
+    {
+      "title": "TalkerCRM, AI Voice CRM",
+      "category": "AI Quality Engineering · QA meets AI",
+      "discipline": "qa",
+      "description": "I own the quality gate for a CRM you talk to in plain English, where the thing under test gives a different answer every time and \"it worked when I tried it\" proves nothing.",
+      "caseStudy": {
+        "problem": "TalkerCRM lets users speak to SuiteCRM in natural language to create records, update information, and pull insights. That breaks conventional QA in a specific way. There's no single expected string to assert against. Ask for the same thing three ways and you can get three valid answers, plus one that's confidently wrong. Voice piles on its own problems: accents, background noise, people cutting the assistant off mid-sentence, and half-finished commands that no happy-path script would ever produce.",
+        "approach": "I treated the AI as untrusted input and untrusted output at the same time. Test cases came from the system's own component diagrams, sequence diagrams, and Swagger docs, so coverage followed the real state space instead of whatever I happened to think of that morning. Then I used AI to generate adversarial datasets at volume: malformed phrasing, contradictory instructions, junk payloads, weird entity names. Those went straight at the voice and chat layers. The important part was validating the whole chain rather than the screen. Spoken intent, parsed command, API call, then the actual CRM record. Plenty of flows return a cheerful confirmation while writing the wrong data, and you only catch that if you go look. I also checked the built-in AI agents on daily task flows and pushed on latency, because an assistant that's correct but slow still gets abandoned.",
+        "role": "QA owner for the AI voice and chatbot features. Test strategy, adversarial dataset design, API and end-to-end validation, and the release call each sprint.",
+        "impact": "The bugs that only show up under messy real input, the ones a scripted suite never reaches, got caught before release instead of by users. This is also the project where my two halves started compounding, because generating test data at the scale QA needed meant doing AI engineering to get it."
+      },
+      "metrics": [
+        { "label": "Surface tested", "value": "Voice · Chat · CRM" },
+        { "label": "Method", "value": "Adversarial + model-based" },
+        { "label": "Chain validated", "value": "Intent to API to record" },
+        { "label": "Role", "value": "QA owner" }
+      ],
+      "techStack": ["SuiteCRM", "Voice AI", "LLMs", "Postman", "Model-Based Testing", "Synthetic Data Generation", "Jira", "Twilio"],
+      "date": "2025 to Present",
+      "status": "In production",
+      "featured": true,
+      "links": [],
+      "images": []
+    },
+    {
+      "title": "ngedu.ai, AI Learning Platform",
+      "category": "AI Engineering · Multi-Agent Systems",
+      "discipline": "ai",
+      "description": "I help build a live Year 0 to 12 learning platform, working on the multi-agent and retrieval side of it with the core engineering team.",
+      "caseStudy": {
+        "problem": "Teaching a national curriculum through an LLM is a grounding problem before it's a teaching problem. Content has to land on-syllabus and at the right grade every single time. A plausible-sounding Year 7 science reading that quietly drifts off the curriculum is a defect, not a style note. On top of that, one overloaded prompt can't reliably tutor a student, deliver a lesson, pace the week, and report to a parent.",
+        "approach": "I help build the agent and retrieval layer. That means multi-agent flows in LangGraph and LangChain where separate agents own separate teaching jobs, and RAG pipelines with vector search backends that keep generated content anchored to syllabus sources. The QA half of my week shows up here constantly. I push for flows that handle their failure cases first, weak or empty retrievals, tool timeouts, students typing nonsense on purpose, and I check outputs for grounding instead of assuming a clean demo will generalise.",
+        "role": "AI Engineer on the team. I help build the multi-agent flows, RAG pipelines, and vector search backends. The platform architecture and overall ownership sit with the engineering lead, not with me.",
+        "impact": "Production AI work on a live, paid platform. It's where I learned the difference between an agent that demos well and one that holds up in front of real students."
+      },
+      "metrics": [
+        { "label": "Curriculum", "value": "Year 0 to 12" },
+        { "label": "My part", "value": "Agent & retrieval layer" },
+        { "label": "Focus", "value": "Agents · RAG · vector search" },
+        { "label": "Status", "value": "Live · paid" }
+      ],
+      "techStack": ["LangGraph", "LangChain", "RAG", "Multi-Agent Systems", "Vector Search", "LLMs", "Python", "ReactJS"],
+      "date": "May 2026 to Present",
+      "status": "Live",
+      "featured": true,
+      "links": [
+        { "name": "Live Product", "url": "https://www.ngedu.ai" }
+      ],
+      "images": []
+    },
+    {
+      "title": "evidence-rag",
+      "category": "AI Engineering · Production RAG",
+      "discipline": "ai",
+      "description": "A RAG service with hybrid retrieval, reranking, and citations the model can't skip. Built so an answer without a source has nowhere to hide, on a stack that costs nothing to run.",
+      "caseStudy": {
+        "problem": "Most RAG demos retrieve something, hand it to an LLM, and hope. When retrieval comes back weak the model fills the gap with fluent invention and nothing in the pipeline objects. For anything that matters, an ungrounded answer is a correctness bug, and \"the model said so\" isn't a source. The usual fix is to throw a paid vector database and a hosted reranker at it, which puts grounded retrieval out of reach if you don't have a budget.",
+        "approach": "I built the retrieval path so it could be checked, not just so it would return something. Hybrid retrieval runs sparse keyword search alongside dense vectors, which matters because the words in a question rarely match the words in the source. A reranking pass then pushes the genuinely relevant chunks up before anything reaches the model. Grounding is enforced rather than requested politely: generation has to attach citations back to retrieved evidence, so an unsupported claim fails visibly instead of sliding through. The whole thing runs on open, free-tier components on purpose, to show the architecture is doing the work and not the invoice.",
+        "role": "Solo build. Retrieval design, reranking, citation enforcement, and the evaluation I used to confirm answers stayed grounded.",
+        "impact": "A working reference for the pattern I care most about, which is making hallucination hard by construction. It's the clearest example of my QA instinct showing up in my engineering: build it so the failure mode is difficult, not merely unlikely."
+      },
+      "metrics": [
+        { "label": "Retrieval", "value": "Hybrid + rerank" },
+        { "label": "Grounding", "value": "Enforced citations" },
+        { "label": "Stack cost", "value": "$0" },
+        { "label": "Type", "value": "Open source" }
+      ],
+      "techStack": ["Python", "RAG", "Hybrid Retrieval", "Reranking", "Vector Search", "LLMs"],
+      "date": "July 2026",
+      "status": "Open source",
+      "featured": true,
+      "links": [
+        { "name": "GitHub", "url": "https://github.com/heenaikramdekhan/evidence-rag" }
+      ],
+      "images": []
+    },
+    {
+      "title": "Sigla Credit, Financial Workflows",
+      "category": "QA Engineering · Fintech",
+      "discipline": "qa",
+      "description": "Model-based testing across a live credit platform, where a permissions gap or a wrong API reply isn't a cosmetic bug. It's someone's money.",
+      "caseStudy": {
+        "problem": "Sigla Credit runs real financial workflows on SuiteCRM with a lot of API integration behind it. Credit systems fail quietly and expensively. A role that can see one record too many. A workflow that advances even though the API call failed. A state transition nobody wrote a case for. Screens times roles times states times API outcomes is far too large a space to cover by writing test cases from memory, and \"we tested the main flow\" isn't a release signal.",
+        "approach": "I derived test cases from the system's own artefacts instead of from intuition: component diagrams, flow charts, sequence diagrams, documented user workflows, and the Swagger spec. That kept coverage tied to the real state space. From there I tested full workflows end to end, across screens, the data underneath, API responses, and permission boundaries, and deliberately spent time on the unhappy paths. Dropped connections mid-transaction, roles reaching for records they shouldn't see, malformed API replies. Each sprint I reported bug status and gave the client a straight release-readiness call with the evidence behind it.",
+        "role": "QA engineer across the credit and sales CRM workflows. Test derivation, execution, API validation, permission testing, and client reporting each sprint.",
+        "impact": "The team got a defensible view of release readiness every sprint on a product where correctness is financial. It also covered the permission and workflow edge cases that an intuition-driven test plan reliably walks past."
+      },
+      "metrics": [
+        { "label": "Domain", "value": "Credit & financial" },
+        { "label": "Method", "value": "Model-based testing" },
+        { "label": "Coverage", "value": "UI · API · permissions" },
+        { "label": "Cadence", "value": "Per-sprint release call" }
+      ],
+      "techStack": ["SuiteCRM", "Postman", "Swagger", "API Testing", "Model-Based Testing", "Jira", "SQL"],
+      "date": "2025 to Present",
+      "status": "In production",
+      "featured": true,
+      "links": [],
+      "images": []
+    },
+    {
+      "title": "PoseMate, AI Posture Correction",
+      "category": "Computer Vision · Final Year Project",
+      "discipline": "ai",
+      "description": "CNN posture evaluation with real-time correction, trained to 95% accuracy on 20,000 images. Better data preparation cut training time by 30%. Placed third in the NUST CS department.",
+      "techStack": ["Python", "CNN", "TensorFlow", "Computer Vision", "Mobile"],
+      "date": "2024",
+      "status": "Completed",
+      "featured": false,
+      "links": [
+        { "name": "GitHub", "url": "https://github.com/heenaikramdekhan/PoseMate---Pose-Estimation-Correction" }
+      ],
+      "images": []
+    },
+    {
+      "title": "CareerFit Pro",
+      "category": "AI Engineering · NLP",
+      "discipline": "ai",
+      "description": "Scores a resume against a job description using semantic embeddings and sentence-transformers, then reports where the two actually line up.",
+      "techStack": ["Python", "Sentence-Transformers", "Semantic Search", "NLP"],
+      "date": "March 2026",
+      "status": "Completed",
+      "featured": false,
+      "links": [
+        { "name": "GitHub", "url": "https://github.com/heenaikramdekhan/CareerFit-Pro-" }
+      ],
+      "images": []
+    },
+    {
+      "title": "Cart Copilot",
+      "category": "AI Engineering · Agents",
+      "discipline": "ai",
+      "description": "Six cooperating agents turn a plain-language shopping request into an actual decision: parsing intent, searching stores live, comparing products, summarising real reviews, then reasoning over the whole cart for savings and mismatches. React frontend, FastAPI backend, and a Supabase review corpus of 141,240 real reviews across roughly 5,600 products.",
+      "techStack": ["Python", "FastAPI", "Multi-Agent Systems", "LLMs", "Supabase", "React"],
+      "date": "July 2026",
+      "status": "Live",
+      "featured": false,
+      "links": [
+        { "name": "Live Demo", "url": "https://cart-copilot-kohl.vercel.app/" },
+        { "name": "GitHub", "url": "https://github.com/heenaikramdekhan/cart-copilot" }
+      ],
+      "images": []
+    },
+    {
+      "title": "Bizzotto CRM and Route Planner",
+      "category": "QA Engineering · Campaigns",
+      "discipline": "qa",
+      "description": "Functional and regression testing on a sales CRM built around email and SMS marketing campaigns, including performance and stress testing for high-volume sends.",
+      "techStack": ["SuiteCRM", "Postman", "Performance Testing", "Twilio", "Jira"],
+      "date": "2025 to Present",
+      "status": "In production",
+      "featured": false,
+      "links": [],
+      "images": []
+    },
+    {
+      "title": "Real-Time Chat Application",
+      "category": "Full-Stack · WebSocket",
+      "discipline": "other",
+      "description": "Built and tested a live chat app over WebSocket, focused on how fast messages actually landed and how the interface held up with several people talking at once.",
+      "techStack": ["ReactJS", "WebSocket", "JavaScript"],
+      "date": "2024",
+      "status": "Completed",
+      "featured": false,
+      "links": [],
+      "images": []
+    },
+    {
+      "title": "Apache AGE, Bitnine Internship",
+      "category": "Databases · Open Source",
+      "discipline": "other",
+      "description": "Contributed to Apache AGE, a graph database extension built for fast analysis and real-time data processing.",
+      "techStack": ["C", "PostgreSQL", "Graph Databases"],
+      "date": "2024",
+      "status": "Completed",
+      "featured": false,
+      "links": [
+        { "name": "GitHub", "url": "https://github.com/heenaikramdekhan/bitnine_apacheAGE_internship" }
+      ],
+      "images": []
+    }
+  ],
+  "social": {
+    "linkedin": "https://www.linkedin.com/in/heena-559584156/",
+    "github": "https://github.com/heenaikramdekhan",
+    "twitter": "",
+    "leetcode": "",
+    "liveProduct": "https://www.ngedu.ai",
+    "portfolio": ""
+  },
+  "internship": {
+    "seeking": true,
+    "duration": "Full-time or contract",
+    "startDate": "Open to conversations now",
+    "preferredLocation": "Islamabad, Pakistan · Remote with international teams",
+    "focusAreas": [
+      "AI Quality Engineering and LLM Evaluation",
+      "Agent and RAG Red-Teaming",
+      "QA Automation",
+      "AI Engineering (Multi-Agent and RAG)"
+    ],
+    "availability": "Open to roles that sit between quality engineering and AI systems",
+    "workStyle": "Adversarial by default, reproducible by habit. I assume the app is guilty until proven innocent, and I write bugs up well enough that nobody has to ask me to reproduce them twice.",
+    "goals": "I want to work with teams shipping AI products who want someone to break them before their users do, and who'd rather that person could also build the fix instead of just filing the ticket."
+  },
+  "personality": {
+    "traits": ["meticulous", "proactive", "adversarial by default", "collaborative", "reproducible"],
+    "interests": [
+      "AI Quality and Evaluation",
+      "Adversarial Testing and Red-Teaming",
+      "Multi-Agent Systems",
+      "Retrieval-Augmented Generation",
+      "Test Automation",
+      "Voice and Conversational Systems"
+    ],
+    "funFacts": [
+      "I've broken voice assistants mid-sentence and killed CRM logins on a bad connection, on purpose",
+      "I've thrown enough garbage data at a chatbot to watch it forget what year it is",
+      "I hold a QA role and an AI engineering role at once, and each one keeps making the other better",
+      "I use AI to generate the adversarial datasets I then use to break AI"
+    ],
+    "workingStyle": "I'd rather ship something that actually works than tick a testing checkbox. Hand me a vague bug report and I'll come back with a reproducible one.",
+    "motivation": "AI products are shipping faster than anyone can verify them. I want to close that gap from both ends, breaking systems as a QA engineer and building sturdier ones as an AI engineer."
+  },
+  "resume": {
+    "title": "Heena, Resume",
+    "description": "Software QA Engineer and AI Engineer, working on quality for AI systems",
+    "fileType": "PDF",
+    "lastUpdated": "July 2026",
+    "fileSize": "0.5 MB",
+    "downloadUrl": "/Heena-Resume.pdf"
+  },
+  "chatbot": {
+    "name": "Heena",
+    "personality": "sharp, evidence-driven, quietly funny",
+    "tone": "direct and conversational",
+    "language": "english",
+    "responseStyle": "specific and concrete, evidence over adjectives",
+    "useEmojis": false,
+    "topics": ["QA engineering", "AI quality and evaluation", "AI engineering", "projects", "skills", "experience", "opportunities", "contact", "education"]
+  },
+  "presetQuestions": {
+    "me": [
+      "Who are you?",
+      "How do QA and AI engineering fit together for you?",
+      "What's your background?",
+      "What's the most interesting thing you've broken?",
+      "What motivates you?"
+    ],
+    "professional": [
+      "What are your skills?",
+      "Can I see your resume?",
+      "How do you test a non-deterministic AI system?",
+      "What's your experience?",
+      "Why should I hire you?",
+      "What's your educational background?",
+      "Are you looking for opportunities?"
+    ],
+    "projects": [
+      "What projects are you most proud of?",
+      "Tell me about TalkerCRM",
+      "How does evidence-rag control hallucinations?",
+      "What QA work have you done in fintech?",
+      "What are you working on right now?"
+    ],
+    "achievements": [
+      "What are your major achievements?",
+      "What impact have you made?",
+      "What are you proud of?"
+    ],
+    "contact": [
+      "How can I reach you?",
+      "What's your email?",
+      "Where are you located?",
+      "Are you available for hire?"
+    ],
+    "fun": [
+      "What are your interests?",
+      "Tell me something interesting about you",
+      "What's a fun fact about you?"
+    ]
+  },
+  "meta": {
+    "configVersion": "1.0",
+    "lastUpdated": "2026-07-27",
+    "generatedBy": "Heena",
+    "description": "Portfolio configuration for Heena, Software QA Engineer and AI Engineer working on quality for AI systems, adversarial testing, and production RAG and multi-agent pipelines"
+  }
+}

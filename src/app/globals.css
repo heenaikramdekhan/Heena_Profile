@@ -1,0 +1,304 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.141 0.005 285.823);
+  --brand: oklch(0.54 0.2 277);
+  --brand-foreground: oklch(0.985 0 0);
+  /* Signature secondary accent — cyan-teal, reserved for metrics / data.
+     Kept dark enough in light mode to clear WCAG AA on small text. */
+  --accent-2: oklch(0.52 0.12 218);
+  --accent-2-foreground: oklch(0.985 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.141 0.005 285.823);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.141 0.005 285.823);
+  --primary: oklch(0.21 0.006 285.885);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --accent: oklch(0.967 0.001 286.375);
+  --accent-foreground: oklch(0.21 0.006 285.885);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.92 0.004 286.32);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.705 0.015 286.067);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.21 0.006 285.885);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.705 0.015 286.067);
+}
+
+.dark {
+  /* Dark surfaces are deliberately lifted off pure black. The original
+     background/card pair (0.141 / 0.21) left cards almost invisible against
+     the page and made muted body copy hard to read, so both are raised and
+     the gap between them widened for real surface separation. */
+  --background: oklch(0.168 0.006 285.823);
+  --foreground: oklch(0.985 0 0);
+  --brand: oklch(0.7 0.16 277);
+  --brand-foreground: oklch(0.168 0.006 285.823);
+  --accent-2: oklch(0.8 0.12 208);
+  --accent-2-foreground: oklch(0.168 0.006 285.823);
+  --card: oklch(0.238 0.007 286);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.21 0.006 285.885);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.92 0.004 286.32);
+  --primary-foreground: oklch(0.21 0.006 285.885);
+  --secondary: oklch(0.3 0.007 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.3 0.007 286.033);
+  /* was 0.705 — too dim for 12px body copy on a dark page */
+  --muted-foreground: oklch(0.785 0.014 286.067);
+  --accent: oklch(0.3 0.007 286.033);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 15%);
+  --input: oklch(1 0 0 / 20%);
+  --ring: oklch(0.552 0.016 285.938);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.552 0.016 285.938);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Consistent, always-visible keyboard focus for interactive elements
+     (form controls carry their own ring). WCAG 2.4.7. */
+  a:focus-visible,
+  button:focus-visible,
+  [role='button']:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+    border-radius: var(--radius);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base polish                                                        */
+/* ------------------------------------------------------------------ */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* offset for the sticky navbar on anchor jumps */
+}
+
+::selection {
+  background-color: color-mix(in oklab, var(--brand) 30%, transparent);
+}
+
+/* Code blocks scroll horizontally instead of breaking the layout */
+pre {
+  white-space: pre;
+  word-wrap: normal;
+  overflow-x: auto;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Thin custom scrollbar                                              */
+/* ------------------------------------------------------------------ */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.45);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(155, 155, 155, 0.7);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Subtle dotted grid background utility (hero)                       */
+/* ------------------------------------------------------------------ */
+.bg-dot-grid {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--foreground) 14%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+/* Same grid, brighter. Revealed only inside the cursor mask so the dots
+   appear to light up under the pointer. */
+.bg-dot-grid-lit {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--brand) 62%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+/* Radial mask so decorative backgrounds fade toward the edges */
+.mask-radial-faded {
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 72%);
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 72%);
+}
+
+/* Prevent body scroll when the AI chat overlay is open */
+body:has([data-ai-overlay="open"]) {
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Design-system utilities (Phase 2)                                  */
+/* ------------------------------------------------------------------ */
+
+/* Fluid display type for the hero — engineered, tight-tracked */
+.text-hero {
+  font-size: clamp(2.6rem, 6.5vw + 0.5rem, 5.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+
+/* Soft multi-point gradient mesh — brand + secondary accent, low opacity */
+.bg-mesh {
+  background-image:
+    radial-gradient(42% 55% at 18% 12%, color-mix(in oklab, var(--brand) 24%, transparent), transparent 70%),
+    radial-gradient(38% 48% at 88% 22%, color-mix(in oklab, var(--accent-2) 20%, transparent), transparent 72%),
+    radial-gradient(55% 60% at 55% 108%, color-mix(in oklab, var(--brand) 14%, transparent), transparent 72%);
+}
+
+/* Faint film-grain noise (inline SVG data-URI — no network request) */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Page-wide ambient background                                       */
+/*                                                                     */
+/*  The gradient mesh used to live only inside the hero, which left     */
+/*  every section below it on flat near-black. This drifts the mesh     */
+/*  slowly behind the whole page instead. Deliberately long and         */
+/*  low-amplitude: it should read as depth, not as a moving background  */
+/*  competing with the text. Killed by the reduced-motion net below.    */
+/* ------------------------------------------------------------------ */
+@keyframes ambient-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2.5%, -2%, 0) scale(1.08);
+  }
+}
+
+.animate-ambient-drift {
+  animation: ambient-drift 32s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Second mesh, accent-led, drifting the opposite way on a different period.
+   Two layers whose cycles don't divide evenly never visibly repeat, which is
+   what stops the background reading as a short loop. */
+.bg-mesh-alt {
+  background-image:
+    radial-gradient(46% 52% at 82% 68%, color-mix(in oklab, var(--accent-2) 22%, transparent), transparent 70%),
+    radial-gradient(40% 44% at 14% 74%, color-mix(in oklab, var(--brand) 18%, transparent), transparent 72%),
+    radial-gradient(50% 40% at 60% 4%, color-mix(in oklab, var(--accent-2) 14%, transparent), transparent 70%);
+}
+
+@keyframes ambient-drift-slow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.07);
+  }
+  50% {
+    transform: translate3d(-3%, 2.5%, 0) scale(1);
+  }
+}
+
+.animate-ambient-drift-slow {
+  animation: ambient-drift-slow 47s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* A slow band of light travelling down the page. Chosen over generic floating
+   particles because a scan pass is on-theme for someone who tests systems for
+   a living. Kept faint enough to never compete with body copy. */
+@keyframes scan-sweep {
+  0% {
+    transform: translate3d(0, -30vh, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, 130vh, 0);
+    opacity: 0;
+  }
+}
+
+.animate-scan-sweep {
+  animation: scan-sweep 17s linear infinite;
+  will-change: transform, opacity;
+}
+
+/* Sparingly-used glass surface for hierarchy, not decoration */
+.glass {
+  background-color: color-mix(in oklab, var(--card) 72%, transparent);
+  backdrop-filter: blur(12px) saturate(1.1);
+  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  border: 1px solid color-mix(in oklab, var(--foreground) 9%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Accessibility: honour reduced-motion for every animation.          */
+/*  Sanctioned use of !important — overrides utility/inline transitions */
+/*  (this is the a11y escape hatch, not a z-index band-aid).            */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
