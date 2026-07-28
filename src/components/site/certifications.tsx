@@ -10,6 +10,8 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
+import { useReducedMotion } from 'framer-motion';
+import { ImageZoom } from '@/components/animate-ui/primitives/effects/image-zoom';
 import { getConfig } from '@/lib/config-loader';
 import type { Certification } from '@/types/portfolio';
 import { Section, Reveal } from './section';
@@ -92,16 +94,37 @@ function Mark({ cert }: { cert: Certification }) {
  * card shares one silhouette so grid rows line up.
  */
 function MediaPanel({ cert }: { cert: Certification }) {
+  // useReducedMotion returns boolean | null; null means "not measured yet",
+  // which for our purposes is the same as "motion allowed".
+  const reduce = useReducedMotion() ?? false;
+
   if (cert.image) {
     return (
       <div className="border-border relative aspect-[16/10] w-full shrink-0 overflow-hidden border-b bg-white">
-        <Image
-          src={cert.image}
-          alt={`${cert.name} certificate`}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-contain"
-        />
+        {/*
+          Hover-to-zoom so the scan is actually readable in place. Click zoom is
+          off on purpose: most of these cards are wrapped in an <a> to the
+          issuer's verify page, so a click has to stay navigation. Disabled
+          under reduced motion, which also restores the default cursor.
+        */}
+        <ImageZoom
+          zoomOnHover={!reduce}
+          zoomOnClick={false}
+          disabled={reduce}
+          zoomScale={2.4}
+          transition={{ type: 'spring', stiffness: 180, damping: 26 }}
+          className="h-full w-full"
+        >
+          <div className="relative h-full w-full">
+            <Image
+              src={cert.image}
+              alt={`${cert.name} certificate`}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-contain"
+            />
+          </div>
+        </ImageZoom>
       </div>
     );
   }
