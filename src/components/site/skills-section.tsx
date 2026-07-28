@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { getConfig } from '@/lib/config-loader';
 import { Section, Reveal } from './section';
-import { HoverLift } from './motion-primitives';
+import { HoverLift, TiltCard } from './motion-primitives';
 import { Tag, TagRow } from './tag';
 
 export function SkillsSection() {
@@ -153,6 +153,7 @@ export function SkillsSection() {
               {band.groups.map((group, i) => (
                 <Reveal key={group.label} delay={i * 0.04}>
                   <HoverLift y={-3} className="h-full">
+                  <TiltCard className="h-full">
                   <div
               className={
                 'card-glow-border h-full rounded-xl border p-5 transition-[box-shadow] duration-300 hover:shadow-lg ' +
@@ -196,6 +197,7 @@ export function SkillsSection() {
                 ))}
               </TagRow>
                   </div>
+                  </TiltCard>
                   </HoverLift>
                 </Reveal>
               ))}

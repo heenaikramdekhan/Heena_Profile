@@ -17,6 +17,7 @@ import {
 import { getConfig } from '@/lib/config-loader';
 import { Section, Reveal } from './section';
 import { primaryButtonClass, secondaryButtonClass } from './button-styles';
+import { Ripple } from './ripple';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -141,23 +142,25 @@ function ContactForm() {
         </motion.p>
       )}
 
-      <button
-        type="submit"
-        disabled={status === 'submitting'}
-        className={primaryButtonClass('w-full sm:w-auto')}
-      >
-        {status === 'submitting' ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Sending…
-          </>
-        ) : (
-          <>
-            <Send className="h-4 w-4" />
-            Send message
-          </>
-        )}
-      </button>
+      <Ripple tone="primary">
+        <button
+          type="submit"
+          disabled={status === 'submitting'}
+          className={primaryButtonClass('w-full sm:w-auto')}
+        >
+          {status === 'submitting' ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Sending…
+            </>
+          ) : (
+            <>
+              <Send className="h-4 w-4" />
+              Send message
+            </>
+          )}
+        </button>
+      </Ripple>
     </form>
   );
 }

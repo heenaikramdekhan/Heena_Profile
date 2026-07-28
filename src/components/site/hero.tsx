@@ -12,6 +12,7 @@ import {
 import { ArrowUpRight, ChevronDown, Github, Linkedin, Mail, FileDown } from 'lucide-react';
 import { getConfig } from '@/lib/config-loader';
 import { primaryButtonClass, secondaryButtonClass, quietButtonClass, iconButtonClass } from './button-styles';
+import { Ripple } from './ripple';
 
 /* -------------------------------------------------------------------------- */
 /*  Signature element: the same AI system seen through two lenses.            */
@@ -359,13 +360,17 @@ export function Hero() {
             variants={item}
             className="mt-7 flex flex-wrap items-center gap-3"
           >
-            <a href="#projects" className={primaryButtonClass()}>
-              View my work
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-            <a href="#contact" className={secondaryButtonClass()}>
-              Get in touch
-            </a>
+            <Ripple tone="primary">
+              <a href="#projects" className={primaryButtonClass()}>
+                View my work
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </Ripple>
+            <Ripple tone="secondary">
+              <a href="#contact" className={secondaryButtonClass()}>
+                Get in touch
+              </a>
+            </Ripple>
             <a
               href={resume.downloadUrl}
               target="_blank"

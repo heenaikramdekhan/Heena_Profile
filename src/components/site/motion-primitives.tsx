@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
+import { Tilt, TiltContent } from '@/components/animate-ui/primitives/effects/tilt';
 
 /**
  * Magnetic — the wrapped element drifts subtly toward the cursor and springs
@@ -67,5 +68,40 @@ export function HoverLift({
     >
       {children}
     </motion.div>
+  );
+}
+
+/**
+ * TiltCard — pointer-driven 3D tilt, wrapping Animate UI's Tilt primitive.
+ *
+ * Lives here rather than being used raw at call sites so the reduced-motion
+ * check stays in one place, matching Magnetic and HoverLift above. Under
+ * reduced motion the children render with no wrapper, no springs and no
+ * mousemove listener at all, rather than a tilt of zero degrees.
+ *
+ * Deliberately applied to whole cards, not to the small skill chips the
+ * upgrade brief suggested. There are 58 of those, and each Tilt instantiates
+ * two motion values, two springs, a mousemove handler and a `will-change:
+ * transform` layer. That is a lot of standing cost for decoration on an
+ * element the size of a word. On a card it reads as depth and costs seven
+ * instances.
+ */
+export function TiltCard({
+  children,
+  className,
+  maxTilt = 6,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  maxTilt?: number;
+}) {
+  const reduce = useReducedMotion();
+
+  if (reduce) return <div className={className}>{children}</div>;
+
+  return (
+    <Tilt maxTilt={maxTilt} perspective={1000} className={className}>
+      <TiltContent className="h-full">{children}</TiltContent>
+    </Tilt>
   );
 }
