@@ -126,6 +126,7 @@
       "issuer": "Shia Imami Ismaili Tariqa and Religious Education Board, Local Board Gilgit",
       "date": "August 2022",
       "image": "/certificates/itreb-tkn-member.png",
+      "logo": "/logos/itreb.png",
       "kind": "volunteering"
     },
     {
@@ -133,12 +134,21 @@
       "issuer": "Aga Khan Social Welfare Local Board Gilgit",
       "date": "July 2019 to July 2021",
       "image": "/certificates/aga-khan-social-welfare-board.png",
+      "logo": "/logos/akdn.png",
       "kind": "volunteering"
     },
     {
       "name": "Member, Aga Khan Youth and Sports Board (AKYSB)",
       "issuer": "Aga Khan Development Network",
       "date": "July 2019 to Present",
+      "logo": "/logos/akdn.png",
+      "kind": "volunteering"
+    },
+    {
+      "name": "Member, Ismaili Volunteers (IV)",
+      "issuer": "Ismaili Volunteers (IV)",
+      "date": "April 2017 to Present",
+      "logo": "/logos/ismaili-volunteers.png",
       "kind": "volunteering"
     }
   ],
@@ -381,7 +391,7 @@
       "status": "Live",
       "featured": false,
       "links": [
-        { "name": "Live Demo", "url": "https://cart-copilot-kohl.vercel.app/" },
+        { "name": "Live Product", "url": "https://cart-copilot-kohl.vercel.app/" },
         { "name": "GitHub", "url": "https://github.com/heenaikramdekhan/cart-copilot" }
       ],
       "images": []

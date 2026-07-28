@@ -44,13 +44,17 @@ function Mark({ cert }: { cert: Certification }) {
 
   if (cert.logo) {
     return (
-      <span className="border-border bg-background relative h-9 w-9 shrink-0 overflow-hidden rounded-md border">
+      // White surface on purpose, matching the certificate panels. These marks
+      // are supplied on a white ground, and keying the white out would hollow
+      // the ones whose design uses it (the Ismaili Volunteers roundel is blue
+      // linework on white, so it would read as a broken ring on a dark card).
+      <span className="border-border relative h-9 w-9 shrink-0 overflow-hidden rounded-md border bg-white">
         <Image
           src={cert.logo}
           alt={cert.issuer ? `${cert.issuer} logo` : `${cert.name} logo`}
           fill
           sizes="36px"
-          className="object-contain p-1"
+          className="object-contain p-0.5"
         />
       </span>
     );
