@@ -55,7 +55,24 @@ Almost all content lives in **`portfolio-config.json`** at the repo root: person
 
 ## Deploy
 
-Set up for **Vercel**: push to GitHub, import the repo, set the environment variables above (`NEXT_PUBLIC_SITE_URL` especially), and deploy. Security headers (CSP, HSTS, X-Frame-Options and the rest) are configured in `next.config.ts`.
+Live on **Vercel**, connected to this repository, so a push to `main` builds and
+promotes to production automatically. `vercel --prod` from the project root still
+works for a manual deploy.
+
+Two things about this particular project that are easy to trip over:
+
+- The Vercel project's **Framework Preset is set to Vite**, left over from an
+  earlier portfolio that shared the project. `vercel.json` pins
+  `"framework": "nextjs"`, which overrides it, so builds succeed. Do not delete
+  `vercel.json` without fixing the preset in project settings first, or the build
+  fails with `No Output Directory named "dist" found`.
+- `NEXT_PUBLIC_SITE_URL` is **inlined at build time**, not read at runtime. It is
+  set to the production alias. Changing the domain means updating that variable
+  and redeploying, otherwise canonical URLs, OpenGraph tags, `sitemap.ts` and
+  `robots.ts` all keep pointing at the old origin.
+
+Security headers (CSP, HSTS, X-Frame-Options and the rest) are configured in
+`next.config.ts`.
 
 ## License
 
