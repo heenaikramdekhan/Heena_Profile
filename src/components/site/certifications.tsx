@@ -1,7 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import { Award, HeartHandshake, ArrowUpRight, ShieldCheck } from 'lucide-react';
+import React from 'react';
+import {
+  Award,
+  HeartHandshake,
+  ArrowUpRight,
+  ShieldCheck,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react';
 import { getConfig } from '@/lib/config-loader';
 import type { Certification } from '@/types/portfolio';
 import { Section, Reveal } from './section';
@@ -40,7 +48,9 @@ function monogram(text: string) {
  * the card has no scan and would otherwise be a bare line of text.
  */
 function Mark({ cert }: { cert: Certification }) {
-  if (!cert.logo && cert.image) return null;
+  // Only alongside a scan. Without one the media panel already shows the logo
+  // at full size, and repeating it beside the title reads as a duplicate.
+  if (!cert.image || !cert.logo) return null;
 
   if (cert.logo) {
     return (
@@ -70,6 +80,58 @@ function Mark({ cert }: { cert: Certification }) {
   );
 }
 
+/**
+ * The card's media band. Always rendered, and never empty: a certificate scan
+ * where one exists, otherwise the organisation logo, otherwise a monogram.
+ *
+ * An earlier version reserved an *empty* panel on scanless cards purely to
+ * equalise heights, which looked like a broken image and was rightly rejected.
+ * This is the opposite: the panel always carries the strongest identifying
+ * mark the entry has, so a role with no certificate (AKYSB, Ismaili
+ * Volunteers) still reads as a finished card rather than a stub, and every
+ * card shares one silhouette so grid rows line up.
+ */
+function MediaPanel({ cert }: { cert: Certification }) {
+  if (cert.image) {
+    return (
+      <div className="border-border relative aspect-[16/10] w-full shrink-0 overflow-hidden border-b bg-white">
+        <Image
+          src={cert.image}
+          alt={`${cert.name} certificate`}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-contain"
+        />
+      </div>
+    );
+  }
+
+  if (cert.logo) {
+    return (
+      <div className="border-border relative aspect-[16/10] w-full shrink-0 overflow-hidden border-b bg-white">
+        <Image
+          src={cert.logo}
+          alt={cert.issuer ? `${cert.issuer} logo` : `${cert.name} logo`}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-contain p-[18%]"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="border-border bg-muted/40 flex aspect-[16/10] w-full shrink-0 items-center justify-center border-b">
+      <span
+        aria-hidden
+        className="text-muted-foreground/70 font-mono text-3xl font-semibold tracking-widest"
+      >
+        {monogram(cert.issuer || cert.name)}
+      </span>
+    </div>
+  );
+}
+
 function Card({ cert }: { cert: Certification }) {
   const meta = [cert.issuer, cert.date].filter(Boolean).join(' · ');
   const linked = Boolean(cert.url);
@@ -77,7 +139,7 @@ function Card({ cert }: { cert: Certification }) {
   const inner = (
     <div
       className={
-        'border-border bg-card group/cert flex flex-col overflow-hidden rounded-xl border transition-[box-shadow] duration-300 ' +
+        'border-border bg-card group/cert flex h-full flex-col overflow-hidden rounded-xl border transition-[box-shadow] duration-300 ' +
         (linked ? 'card-glow-border hover:shadow-brand/10 hover:shadow-lg' : '')
       }
     >
@@ -85,17 +147,7 @@ function Card({ cert }: { cert: Certification }) {
           reserved this panel on every card so row heights matched, but that
           left large empty boxes leading the section. The grid uses
           `items-start` instead, so text-only cards simply stay short. */}
-      {cert.image && (
-        <div className="border-border relative aspect-[16/10] w-full overflow-hidden border-b bg-white">
-          <Image
-            src={cert.image}
-            alt={`${cert.name} certificate`}
-            fill
-            sizes="(max-width: 640px) 100vw, 50vw"
-            className="object-contain"
-          />
-        </div>
-      )}
+      <MediaPanel cert={cert} />
 
       <div className="flex flex-col p-4">
         <div className="flex items-start justify-between gap-3">
@@ -159,6 +211,90 @@ function Card({ cert }: { cert: Certification }) {
   );
 }
 
+/** How many cards a band shows before the reveal control appears. */
+const INITIAL_VISIBLE = 6;
+
+/**
+ * One credential band: heading, a three-up grid, and a progressive reveal.
+ *
+ * Layout note, because this reverses an earlier decision recorded in
+ * CLAUDE.md. The band used to be CSS multi-column, chosen because card heights
+ * varied by roughly 4x between a card with a scan and a name-only card, and a
+ * grid left dead vertical gaps. That reason no longer holds: every scan is now
+ * normalised to the panel's 16:10, and MediaPanel guarantees each card has a
+ * media band of identical height, so cards differ only by their text. A grid
+ * therefore lines rows up cleanly, which is what multi-column could never do,
+ * and it restores row-major reading order as a bonus.
+ */
+function Band({
+  label,
+  icon: Icon,
+  items,
+}: {
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  items: Certification[];
+}) {
+  const [expanded, setExpanded] = React.useState(false);
+  const canCollapse = items.length > INITIAL_VISIBLE;
+  const visible = expanded || !canCollapse ? items : items.slice(0, INITIAL_VISIBLE);
+  const hidden = items.length - visible.length;
+
+  return (
+    <div>
+      <Reveal>
+        <div className="mb-4 flex items-center gap-3">
+          <span className="bg-brand/10 text-brand flex h-8 w-8 items-center justify-center rounded-md">
+            <Icon className="h-4 w-4" />
+          </span>
+          <h3 className="text-muted-foreground font-mono text-xs font-semibold tracking-widest uppercase">
+            {label}
+          </h3>
+          <span className="bg-border h-px flex-1" />
+          <span
+            aria-live="polite"
+            className="text-muted-foreground font-mono text-[11px]"
+          >
+            {visible.length} of {items.length}
+          </span>
+        </div>
+      </Reveal>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {visible.map((cert, i) => (
+          <Reveal key={cert.name} delay={Math.min(i, 5) * 0.04}>
+            <HoverLift y={-3} className="h-full">
+              <Card cert={cert} />
+            </HoverLift>
+          </Reveal>
+        ))}
+      </div>
+
+      {canCollapse && (
+        <div className="mt-5 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className="border-border text-muted-foreground hover:text-foreground hover:border-brand/45 hover:shadow-brand/10 inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-medium transition-[color,border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-md"
+          >
+            {expanded ? (
+              <>
+                Show fewer
+                <ChevronUp className="h-3.5 w-3.5" />
+              </>
+            ) : (
+              <>
+                Show {hidden} more
+                <ChevronDown className="h-3.5 w-3.5" />
+              </>
+            )}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Certifications() {
   const { certifications } = getConfig();
   const all = certifications ?? [];
@@ -185,43 +321,14 @@ export function Certifications() {
       title="Certifications"
       description="Coursework and credentials on the technical side, plus the volunteering I've done alongside it."
     >
-      <div className="space-y-10">
+      <div className="space-y-12">
         {bands.map((band) => (
-          <div key={band.label}>
-            <Reveal>
-              <div className="mb-4 flex items-center gap-3">
-                <span className="bg-brand/10 text-brand flex h-8 w-8 items-center justify-center rounded-md">
-                  <band.icon className="h-4 w-4" />
-                </span>
-                <h3 className="text-muted-foreground font-mono text-xs font-semibold tracking-widest uppercase">
-                  {band.label}
-                </h3>
-                <span className="bg-border h-px flex-1" />
-                <span className="text-muted-foreground font-mono text-[11px]">
-                  {band.items.length}
-                </span>
-              </div>
-            </Reveal>
-
-            {/* Multi-column rather than grid. Card heights vary a lot (a scan
-                is ~4x the height of a name-only card), and a grid would leave
-                dead vertical gaps wherever a short card sits beside a tall
-                one. Columns pack them and self-balance. Order becomes
-                column-major, which is fine for an unordered credential list. */}
-            <div className="columns-1 gap-4 sm:columns-2">
-              {band.items.map((cert, i) => (
-                <Reveal
-                  key={cert.name}
-                  delay={i * 0.04}
-                  className="mb-4 break-inside-avoid"
-                >
-                  <HoverLift y={-3}>
-                    <Card cert={cert} />
-                  </HoverLift>
-                </Reveal>
-              ))}
-            </div>
-          </div>
+          <Band
+            key={band.label}
+            label={band.label}
+            icon={band.icon}
+            items={band.items}
+          />
         ))}
       </div>
     </Section>
