@@ -112,6 +112,17 @@
 /* ------------------------------------------------------------------ */
 html {
   scroll-behavior: smooth;
+}
+
+/*
+ * Lenis drives scrolling when it is mounted, so native smooth scrolling has to
+ * step aside or the two animate the same scrollTop against each other. The
+ * class is only present while Lenis is running, which means the reduced-motion
+ * path (where Lenis is never mounted) keeps plain CSS behaviour and the net
+ * below still flattens it.
+ */
+html.lenis-active {
+  scroll-behavior: auto;
   scroll-padding-top: 5rem; /* offset for the sticky navbar on anchor jumps */
 }
 

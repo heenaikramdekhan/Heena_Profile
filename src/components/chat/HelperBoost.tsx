@@ -29,6 +29,7 @@ import {
 import { useState } from 'react';
 import { Drawer } from 'vaul';
 import { PresetReply } from '@/components/chat/preset-reply';
+import { useLenisPaused } from '@/components/site/smooth-scroll';
 import { presetReplies } from '@/lib/config-loader';
 
 interface HelperBoostProps {
@@ -142,6 +143,10 @@ export default function HelperBoost({
   const [isVisible, setIsVisible] = useState(true);
   const [open, setOpen] = useState(false);
   const [showPresetReply, setShowPresetReply] = useState<string | null>(null);
+
+  // vaul locks the body while the drawer is open, which Lenis ignores. Without
+  // this the page scrolls underneath the drawer as you swipe inside it.
+  useLenisPaused(open);
 
   const handleQuestionClick = (questionKey: string) => {
     const question = questions[questionKey as keyof typeof questions];

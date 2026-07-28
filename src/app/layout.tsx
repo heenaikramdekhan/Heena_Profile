@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import { SmoothScroll } from "@/components/site/smooth-scroll";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
@@ -193,7 +194,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <SmoothScroll>{children}</SmoothScroll>
           <Toaster />
         </ThemeProvider>
         <Analytics />

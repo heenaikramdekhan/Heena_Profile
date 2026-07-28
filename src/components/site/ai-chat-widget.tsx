@@ -4,6 +4,7 @@ import React, { Suspense } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Sparkles, X } from 'lucide-react';
 import Chat from '@/components/chat/chat';
+import { useLenisPaused } from './smooth-scroll';
 
 /**
  * Floating "Ask my AI" launcher. Opens the existing AI-twin chat in a
@@ -12,6 +13,10 @@ import Chat from '@/components/chat/chat';
  */
 export function AIChatWidget() {
   const [open, setOpen] = React.useState(false);
+
+  // body:has([data-ai-overlay="open"]) already sets overflow: hidden, but that
+  // does not stop Lenis, which keeps writing scrollTop from its own rAF loop.
+  useLenisPaused(open);
 
   React.useEffect(() => {
     if (!open) return;
