@@ -18,6 +18,54 @@ import { HoverLift } from './motion-primitives';
  * volunteering band does not appear until it has something in it.
  */
 
+/**
+ * Initials for the monogram fallback. Drops the leading article and the
+ * generic words that every one of these bodies shares, so "Aga Khan Social
+ * Welfare Local Board Gilgit" gives AK rather than AK from "Aga" + "Khan"
+ * being indistinguishable from the next board along.
+ */
+const FILLER = /^(the|of|and|for|local|board|council|national)$/i;
+
+function monogram(text: string) {
+  const words = text
+    .replace(/[(),·]/g, ' ')
+    .split(/\s+/)
+    .filter((w) => w && !FILLER.test(w));
+  return ((words[0]?.[0] ?? '') + (words[1]?.[0] ?? '')).toUpperCase();
+}
+
+/**
+ * Organisation mark. A real logo when one is supplied, otherwise a monogram.
+ * Only rendered when it earns its place: either there is a logo to show, or
+ * the card has no scan and would otherwise be a bare line of text.
+ */
+function Mark({ cert }: { cert: Certification }) {
+  if (!cert.logo && cert.image) return null;
+
+  if (cert.logo) {
+    return (
+      <span className="border-border bg-background relative h-9 w-9 shrink-0 overflow-hidden rounded-md border">
+        <Image
+          src={cert.logo}
+          alt={cert.issuer ? `${cert.issuer} logo` : `${cert.name} logo`}
+          fill
+          sizes="36px"
+          className="object-contain p-1"
+        />
+      </span>
+    );
+  }
+
+  return (
+    <span
+      aria-hidden
+      className="border-border bg-muted/60 text-muted-foreground flex h-9 w-9 shrink-0 items-center justify-center rounded-md border font-mono text-xs font-semibold"
+    >
+      {monogram(cert.issuer || cert.name)}
+    </span>
+  );
+}
+
 function Card({ cert }: { cert: Certification }) {
   const meta = [cert.issuer, cert.date].filter(Boolean).join(' · ');
   const linked = Boolean(cert.url);
@@ -47,9 +95,12 @@ function Card({ cert }: { cert: Certification }) {
 
       <div className="flex flex-col p-4">
         <div className="flex items-start justify-between gap-3">
-          <h4 className="text-foreground text-sm leading-snug font-medium">
-            {cert.name}
-          </h4>
+          <div className="flex min-w-0 items-start gap-2.5">
+            <Mark cert={cert} />
+            <h4 className="text-foreground text-sm leading-snug font-medium">
+              {cert.name}
+            </h4>
+          </div>
           {linked && (
             <ArrowUpRight className="text-muted-foreground group-hover/cert:text-foreground mt-0.5 h-3.5 w-3.5 shrink-0 transition-colors" />
           )}

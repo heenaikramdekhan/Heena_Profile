@@ -127,6 +127,19 @@
       "date": "August 2022",
       "image": "/certificates/itreb-tkn-member.png",
       "kind": "volunteering"
+    },
+    {
+      "name": "Recognition of Services, Board Member",
+      "issuer": "Aga Khan Social Welfare Local Board Gilgit",
+      "date": "July 2019 to July 2021",
+      "image": "/certificates/aga-khan-social-welfare-board.png",
+      "kind": "volunteering"
+    },
+    {
+      "name": "Member, Aga Khan Youth and Sports Board (AKYSB)",
+      "issuer": "Aga Khan Development Network",
+      "date": "July 2019 to Present",
+      "kind": "volunteering"
     }
   ],
   "experience": [

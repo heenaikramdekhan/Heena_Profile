@@ -84,6 +84,15 @@ export interface Certification {
    * peer of the specialization that contains it, which reads as padding.
    */
   includes?: string[];
+  /**
+   * Optional organisation mark, e.g. `/logos/akdn.png`. Square works best.
+   * Shown as a small chip beside the title. When it is absent the card falls
+   * back to a monogram built from the issuer, so an entry with neither a scan
+   * nor a logo still has some visual identity instead of being bare text.
+   * Volunteering roles often have no certificate at all, which is what this is
+   * for.
+   */
+  logo?: string;
   kind: 'technical' | 'volunteering';
 }
 
