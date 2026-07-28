@@ -98,7 +98,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
           {/* Only show AI option when there's a major component - no text needed */}
           {showAIOption && (
             <ChatBubble variant="received">
-              <ChatBubbleMessage className="bg-gray-50/80 dark:bg-gray-800/80 w-full">
+              <ChatBubbleMessage className="bg-muted/60 w-full">
                 <div className="space-y-3 p-6 w-full">
                   {onClose && (
                     <div className="flex justify-end">
@@ -106,7 +106,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                         onClick={onClose}
                         variant="ghost"
                         size="sm"
-                        className="h-6 w-6 p-0 hover:bg-gray-200/50 rounded-full"
+                        className="h-6 w-6 p-0 hover:bg-muted/50 rounded-full"
                       >
                         <X className="w-4 h-4" />
                       </Button>
@@ -120,7 +120,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                           <Zap className="w-3 h-3 flex-shrink-0" />
                           <span className="font-medium">Preset Response</span>
                         </div>
-                        <span className="text-xs text-gray-500">• I implemented this to save API quota</span>
+                        <span className="text-xs text-muted-foreground">• I implemented this to save API quota</span>
                       </div>
                       <Button 
                         onClick={handleGetAIResponse}
@@ -149,7 +149,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                     onClick={onClose}
                     variant="ghost"
                     size="sm"
-                    className="h-6 w-6 p-0 hover:bg-gray-200/50 rounded-full"
+                    className="h-6 w-6 p-0 hover:bg-muted/50 rounded-full"
                   >
                     <X className="w-4 h-4" />
                   </Button>
@@ -157,7 +157,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
               )}
               
               {/* Reply content with enhanced formatting */}
-              <div className="prose prose-sm max-w-none text-gray-700 dark:text-gray-300 px-2">
+              <div className="prose prose-sm max-w-none text-muted-foreground px-2">
                 {reply.split('\n').map((line, index) => {
                   if (line.trim() === '') return <br key={index} />;
                   
@@ -223,7 +223,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                       <p key={index} className="mb-3 last:mb-0 leading-relaxed">
                         {parts.map((part, partIndex) => 
                           partIndex % 2 === 1 ? 
-                            <strong key={partIndex} className="font-semibold text-gray-800 dark:text-gray-200">{part}</strong> : 
+                            <strong key={partIndex} className="font-semibold text-foreground">{part}</strong> : 
                             part
                         )}
                       </p>
@@ -233,7 +233,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                   // Handle emoji lines (headers)
                   if (/^[🎯🚀💼🏆📊🔧🌟💡🎓📍🌍⚡🤝]/u.test(line)) {
                     return (
-                      <p key={index} className="mb-2 last:mb-0 font-medium text-gray-800 dark:text-gray-200 text-base">
+                      <p key={index} className="mb-2 last:mb-0 font-medium text-foreground text-base">
                         {line}
                       </p>
                     );
@@ -242,7 +242,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                   // Handle bullet points
                   if (line.startsWith('• ') || line.startsWith('- ')) {
                     return (
-                      <p key={index} className="mb-1 last:mb-0 ml-4 text-gray-600 dark:text-gray-400">
+                      <p key={index} className="mb-1 last:mb-0 ml-4 text-muted-foreground">
                         {line}
                       </p>
                     );
@@ -258,7 +258,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
               
               {/* Enhanced AI option */}
               {showAIOption && (
-                <div className="border-t border-gray-200/60 pt-4 mt-4">
+                <div className="border-t border-border pt-4 mt-4">
                   <div className="flex flex-col gap-3">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -266,7 +266,7 @@ export function PresetReply({ question, reply, tool, onGetAIResponse, onClose }:
                           <Zap className="w-3 h-3 flex-shrink-0" />
                           <span className="font-medium">Optimized Response</span>
                         </div>
-                        <span className="text-xs text-gray-500">• I implemented this to save API quota</span>
+                        <span className="text-xs text-muted-foreground">• I implemented this to save API quota</span>
                       </div>
                       <Button 
                         onClick={handleGetAIResponse}

@@ -42,7 +42,7 @@ const ProjectContent = ({ project }: { project: { title: string } }) => {
               <span className={`text-sm px-2 py-1 rounded-full ${
                 projectData.status === 'Completed' || projectData.status === 'Live' ? 'bg-green-100 text-green-800' :
                 projectData.status === 'Ongoing' ? 'bg-blue-100 text-blue-800' :
-                'bg-gray-100 text-gray-800'
+                'bg-muted text-foreground'
               }`}>
                 {projectData.status}
               </span>

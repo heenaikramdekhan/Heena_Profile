@@ -202,7 +202,7 @@ export default function HelperBoost({
           >
             <button
               onClick={toggleVisibility}
-              className="flex items-center gap-1 px-3 py-1 text-xs text-gray-500 transition-colors hover:text-gray-700"
+              className="flex items-center gap-1 px-3 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
               {isVisible ? (
                 <>
@@ -273,12 +273,12 @@ export default function HelperBoost({
         {/* Drawer Content */}
         <Drawer.Portal>
           <Drawer.Overlay className="fixed inset-0 z-100 bg-black/60 backdrop-blur-xs" />
-          <Drawer.Content className="fixed right-0 bottom-0 left-0 z-100 mt-24 flex h-[80%] flex-col rounded-t-[10px] bg-gray-100 outline-none lg:h-[60%]">
+          <Drawer.Content className="fixed right-0 bottom-0 left-0 z-100 mt-24 flex h-[80%] flex-col rounded-t-[10px] bg-muted outline-none lg:h-[60%]">
             <div className="flex-1 overflow-y-auto rounded-t-[10px] bg-white p-4">
               <div className="mx-auto max-w-md space-y-4">
                 <div
                   aria-hidden
-                  className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-gray-300"
+                  className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-border"
                 />
                 <div className="mx-auto w-full max-w-md">
                   <div className="space-y-8 pb-16">
@@ -320,7 +320,7 @@ function CategorySection({
     <div className="space-y-3">
       <div className="flex items-center gap-2.5 px-1">
         <Icon className="h-5 w-5" />
-        <Drawer.Title className="text-[22px] font-medium text-gray-900">
+        <Drawer.Title className="text-[22px] font-medium text-foreground">
           {name}
         </Drawer.Title>
       </div>

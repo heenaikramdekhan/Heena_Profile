@@ -206,7 +206,7 @@ const AvailabilityCard = ({ data }: AvailabilityCardProps) => {
       <div className="mt-10 flex justify-center">
         <button
           onClick={handleContactClick}
-          className="cursor-pointer rounded-full bg-black px-6 py-3 font-semibold text-white transition-colors duration-300 hover:bg-zinc-800"
+          className="cursor-pointer rounded-full bg-foreground px-6 py-3 font-semibold text-background transition-colors duration-300 hover:bg-foreground/90"
         >
           Contact me
         </button>

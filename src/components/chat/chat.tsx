@@ -12,7 +12,7 @@ import ChatLanding from '@/components/chat/chat-landing';
 import ChatMessageContent from '@/components/chat/chat-message-content';
 import { SimplifiedChatView } from '@/components/chat/simple-chat-view';
 import { PresetReply } from '@/components/chat/preset-reply';
-import { presetReplies } from '@/lib/config-loader';
+import { presetReplies, profileInfo } from '@/lib/config-loader';
 import {
   ChatBubble,
   ChatBubbleMessage,
@@ -51,7 +51,7 @@ const Avatar = dynamic<AvatarProps>(
         >
           <div className="relative">
             <img
-              src="/avatar.png"
+              src={profileInfo.src}
               alt="Avatar"
               className="h-full w-full object-cover object-[center_top_-5%] scale-95 rounded-full"
             />
@@ -403,7 +403,7 @@ const Chat = () => {
                             setErrorMessage(null);
                             window.location.href = '/';
                           }}
-                          className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                          className="px-4 py-2 bg-muted text-foreground text-sm rounded-md hover:bg-accent transition-colors"
                         >
                           Use Presets
                         </button>

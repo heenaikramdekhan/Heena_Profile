@@ -63,10 +63,10 @@ export function Resume() {
         transition={{ duration: 0.4, delay: 0.2 }}
         className="w-full rounded-xl overflow-hidden border bg-white shadow-lg"
       >
-        <div className="bg-gray-100 px-4 py-2 flex items-center justify-between border-b">
+        <div className="bg-muted px-4 py-2 flex items-center justify-between border-b">
           <div className="flex items-center gap-2">
-            <File className="h-4 w-4 text-gray-600" />
-            <span className="text-sm font-medium text-gray-700">Resume Preview</span>
+            <File className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium text-foreground">Resume Preview</span>
           </div>
           <button
             onClick={handleDownload}
@@ -77,7 +77,7 @@ export function Resume() {
           </button>
         </div>
         
-        <div className="w-full h-[600px] bg-gray-50">
+        <div className="w-full h-[600px] bg-muted/50">
           <iframe
             src={resumeDetails.downloadUrl}
             width="100%"
