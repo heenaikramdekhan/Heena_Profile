@@ -274,7 +274,10 @@
       "date": "2025 to Present",
       "status": "In production",
       "featured": true,
-      "links": [],
+      "links": [
+        { "name": "Live Login", "url": "https://talkercrm.lionsolution.it/login" },
+        { "name": "Dev Environment", "url": "https://devtalkercrm.lionsolution.it/" }
+      ],
       "images": []
     },
     {
@@ -405,7 +408,9 @@
       "date": "2025 to Present",
       "status": "In production",
       "featured": false,
-      "links": [],
+      "links": [
+        { "name": "Live Product", "url": "https://crm.bizzotto.com/" }
+      ],
       "images": []
     },
     {
