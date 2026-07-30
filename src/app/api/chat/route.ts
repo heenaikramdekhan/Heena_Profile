@@ -30,10 +30,20 @@ const KEY_PLACEHOLDER = 'your_google_ai_api_key_here';
  * into a host's dashboard. The two names drifting apart is exactly what left
  * this widget silently offline once, and the fallback costs one line.
  */
+/**
+ * Trimmed on the way in, which is not paranoia: the key travels through a
+ * dashboard paste or a shell pipe before it gets here, and a stray byte-order
+ * mark or newline rides along easily. The provider puts this straight into an
+ * `x-goog-api-key` header, and a header value has to be Latin-1, so one
+ * invisible U+FEFF turns every reply into "Cannot convert argument to a
+ * ByteString" with nothing on screen to explain it. `trim()` covers U+FEFF.
+ */
 const apiKey = [
   process.env.GOOGLE_GENERATIVE_AI_API_KEY,
   process.env.GEMINI_API_KEY,
-].find((value) => value && value !== KEY_PLACEHOLDER);
+]
+  .map((value) => value?.trim())
+  .find((value) => value && value !== KEY_PLACEHOLDER);
 
 /**
  * `gemini-2.5-flash` was the model here, and Google retired it for newly issued
