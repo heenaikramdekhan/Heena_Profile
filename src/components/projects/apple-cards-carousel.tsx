@@ -10,6 +10,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 
 // Simple icon components to replace @tabler/icons-react
 const IconArrowNarrowLeft = ({ className }: { className?: string }) => (
@@ -203,6 +204,10 @@ export const Card = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const { onCardClose, currentIndex } = useContext(CarouselContext);
 
+  // Portalling needs a DOM, so it has to wait for the client.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
@@ -212,11 +217,17 @@ export const Card = ({
 
     if (open) {
       document.body.style.overflow = 'hidden';
-      // Add attribute to hide chatbot
       document.body.setAttribute('data-project-modal-open', 'true');
     } else {
-      document.body.style.overflow = 'auto';
-      // Remove attribute to show chatbot
+      /**
+       * Remove the inline value instead of setting `auto`. When this card is
+       * opened from inside the chat overlay, the overlay is holding the page
+       * still via `body:has([data-ai-overlay="open"]) { overflow: hidden }` in
+       * globals.css. An inline `overflow: auto` outranks that rule, so closing
+       * a project used to hand scrolling back to the page underneath while the
+       * chat was still open. Clearing the property lets the stylesheet decide.
+       */
+      document.body.style.removeProperty('overflow');
       document.body.removeAttribute('data-project-modal-open');
     }
 
@@ -236,59 +247,79 @@ export const Card = ({
     onCardClose(index);
   };
 
+  /**
+   * The expanded card, rendered into `document.body` rather than in place.
+   *
+   * `position: fixed` and `z-[99999]` are not enough on their own. This card is
+   * opened from inside the projects carousel, and two of its ancestors set
+   * `position: relative` with a z-index (`z-0` on the carousel wrapper, `z-10`
+   * inside it). Either one is a new stacking context, so this z-index is only
+   * ever compared against that ancestor's siblings, never against the rest of
+   * the page. Inside the chat overlay that meant the message input, which sits
+   * later in the DOM at the same effective level, painted straight over the open
+   * card and cut off everything below the fold with no way to scroll to it.
+   *
+   * Portalling to `document.body` puts the card outside every one of those
+   * traps, so the z-index means what it says. Don't inline this back into the
+   * carousel; raising the z-index further cannot fix a scoped stacking context.
+   */
+  const expandedCard = (
+    <AnimatePresence>
+      {open && (
+        <div className="fixed inset-0 z-[99999] h-screen overflow-auto">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[99998] h-full w-full bg-black/80 backdrop-blur-lg"
+          />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            ref={containerRef}
+            layoutId={layout ? `card-${card.title}` : undefined}
+            className="relative z-[99999] mx-auto my-10 h-fit w-[95vw] max-w-7xl rounded-3xl bg-white font-sans dark:bg-card"
+          >
+            {/* Sticky close button */}
+            <div className="sticky top-4 z-[100000] flex justify-end px-8 pt-8 md:px-14 md:pt-8">
+              <button
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-black/90 shadow-md dark:bg-white/90"
+                onClick={handleClose}
+              >
+                <IconX className="h-6 w-6 text-foreground dark:text-foreground" />
+              </button>
+            </div>
+
+            {/* Header section with consistent padding */}
+            <div className="relative px-8 pt-2 pb-0 md:px-14">
+              <div>
+                <motion.p
+                  layoutId={layout ? `category-${card.title}` : undefined}
+                  className="text-base font-medium text-black dark:text-white"
+                >
+                  {card.category}
+                </motion.p>
+                <motion.p
+                  layoutId={layout ? `title-${card.title}` : undefined}
+                  className="mt-4 text-2xl font-semibold text-muted-foreground md:text-5xl dark:text-white"
+                >
+                  {card.title}
+                </motion.p>
+              </div>
+            </div>
+
+            {/* Content with consistent padding */}
+            <div className="px-8 pt-8 pb-14 md:px-14">{card.content}</div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+
   return (
     <>
-      <AnimatePresence>
-        {open && (
-          <div className="fixed inset-0 z-[99999] h-screen overflow-auto">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[99998] h-full w-full bg-black/80 backdrop-blur-lg"
-            />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              ref={containerRef}
-              layoutId={layout ? `card-${card.title}` : undefined}
-              className="relative z-[99999] mx-auto my-10 h-fit w-[95vw] max-w-7xl rounded-3xl bg-white font-sans dark:bg-card"
-            >
-              {/* Sticky close button */}
-              <div className="sticky top-4 z-[100000] flex justify-end px-8 pt-8 md:px-14 md:pt-8">
-                <button
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-black/90 shadow-md dark:bg-white/90"
-                  onClick={handleClose}
-                >
-                  <IconX className="h-6 w-6 text-foreground dark:text-foreground" />
-                </button>
-              </div>
-
-              {/* Header section with consistent padding */}
-              <div className="relative px-8 pt-2 pb-0 md:px-14">
-                <div>
-                  <motion.p
-                    layoutId={layout ? `category-${card.title}` : undefined}
-                    className="text-base font-medium text-black dark:text-white"
-                  >
-                    {card.category}
-                  </motion.p>
-                  <motion.p
-                    layoutId={layout ? `title-${card.title}` : undefined}
-                    className="mt-4 text-2xl font-semibold text-muted-foreground md:text-5xl dark:text-white"
-                  >
-                    {card.title}
-                  </motion.p>
-                </div>
-              </div>
-
-              {/* Content with consistent padding */}
-              <div className="px-8 pt-8 pb-14 md:px-14">{card.content}</div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      {mounted ? createPortal(expandedCard, document.body) : null}
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
