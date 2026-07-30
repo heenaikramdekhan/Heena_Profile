@@ -1,5 +1,6 @@
 'use client';
 import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport, isToolUIPart, type UIMessage } from 'ai';
 import { AnimatePresence, motion, Transition } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
@@ -20,8 +21,7 @@ import {
 import HelperBoost from './HelperBoost';
 
 // ClientOnly component for client-side rendering
-//@ts-ignore
-const ClientOnly = ({ children }) => {
+const ClientOnly = ({ children }: { children: React.ReactNode }) => {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -77,12 +77,14 @@ const MOTION_CONFIG: {
   },
 };
 
+const QUOTA_NOTICE =
+  '⚠️ **API quota exhausted**\n\nThe free Gemini API limit has been reached. Please contact Heena directly, or use the preset questions below.';
 
 const Chat = () => {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('query');
   const [autoSubmitted, setAutoSubmitted] = useState(false);
-  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [input, setInput] = useState('');
   const [presetReply, setPresetReply] = useState<{
     question: string;
     reply: string;
@@ -90,70 +92,69 @@ const Chat = () => {
   } | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const {
-    messages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    isLoading,
-    stop,
-    setMessages,
-    setInput,
-    reload,
-    addToolResult,
-    append,
-  } = useChat({
-    onResponse: (response) => {
-      if (response) {
-        setLoadingSubmit(false);
-      }
-    },
-    onFinish: () => {
-      setLoadingSubmit(false);
-    },
+  const { messages, sendMessage, status, stop, setMessages } = useChat({
+    // Same path as the default, spelled out so the endpoint is findable.
+    transport: new DefaultChatTransport({ api: '/api/chat' }),
     onError: (error) => {
-      setLoadingSubmit(false);
       console.error('Chat error:', error.message, error.cause);
-      
+
       // Handle specific error types
-      if (error.message?.includes('quota') || error.message?.includes('exceeded') || error.message?.includes('429')) {
+      if (
+        error.message?.includes('quota') ||
+        error.message?.includes('exceeded') ||
+        error.message?.includes('429')
+      ) {
         // Show a friendly notification for quota issues
-        toast.error('API quota exhausted. The free Gemini limit has been reached, so please contact Heena directly or use the preset questions below.', {
-          duration: 6000, // Show for 6 seconds
-          style: {
-            background: '#fef3c7',
-            border: '1px solid #f59e0b',
-            color: '#92400e',
-            fontSize: '14px',
-            fontWeight: '500',
-          },
-        });
-        
+        toast.error(
+          'API quota exhausted. The free Gemini limit has been reached, so please contact Heena directly or use the preset questions below.',
+          {
+            duration: 6000, // Show for 6 seconds
+            style: {
+              background: '#fef3c7',
+              border: '1px solid #f59e0b',
+              color: '#92400e',
+              fontSize: '14px',
+              fontWeight: '500',
+            },
+          }
+        );
+
         // Set error message state for frontend display
         setErrorMessage('quota_exhausted');
-        
-        // Try to add a chat bubble with the error message
-        try {
-          append({
+
+        // Also leave it in the transcript, so scrolling back explains itself.
+        setMessages((previous) => [
+          ...previous,
+          {
+            id: `quota-notice-${previous.length}`,
             role: 'assistant',
-            content: '⚠️ **API quota exhausted**\n\nThe free Gemini API limit has been reached. Please contact Heena directly, or use the preset questions below.',
-          });
-        } catch (appendError) {
-          console.error('Failed to append error message:', appendError);
-        }
+            parts: [{ type: 'text', text: QUOTA_NOTICE }],
+          },
+        ]);
       } else if (error.message?.includes('network')) {
-        toast.error('Network error. Please check your connection and try again.');
-        setErrorMessage('Network error. Please check your connection and try again.');
+        toast.error(
+          'Network error. Please check your connection and try again.'
+        );
+        setErrorMessage(
+          'Network error. Please check your connection and try again.'
+        );
       } else {
         toast.error(`Error: ${error.message}`);
         setErrorMessage(`Error: ${error.message}`);
       }
     },
-    onToolCall: (tool) => {
-      const toolName = tool.toolCall.toolName;
-      console.log('Tool call:', toolName);
+    onToolCall: ({ toolCall }) => {
+      console.log('Tool call:', toolCall.toolName);
     },
   });
+
+  /**
+   * `status` replaces the hand-rolled loading flag this component used to keep
+   * in state: 'submitted' is the gap between sending and the first chunk, which
+   * is exactly when the typing bubble should show.
+   */
+  const isLoading = status === 'submitted' || status === 'streaming';
+  const awaitingReply = status === 'submitted';
 
   const { currentAIMessage, latestUserMessage, hasActiveTool } = useMemo(() => {
     const latestAIMessageIndex = messages.findLastIndex(
@@ -163,7 +164,11 @@ const Chat = () => {
       (m) => m.role === 'user'
     );
 
-    const result = {
+    const result: {
+      currentAIMessage: UIMessage | null;
+      latestUserMessage: UIMessage | null;
+      hasActiveTool: boolean;
+    } = {
       currentAIMessage:
         latestAIMessageIndex !== -1 ? messages[latestAIMessageIndex] : null,
       latestUserMessage:
@@ -174,9 +179,7 @@ const Chat = () => {
     if (result.currentAIMessage) {
       result.hasActiveTool =
         result.currentAIMessage.parts?.some(
-          (part) =>
-            part.type === 'tool-invocation' &&
-            part.toolInvocation?.state === 'result'
+          (part) => isToolUIPart(part) && part.state === 'output-available'
         ) || false;
     }
 
@@ -191,59 +194,51 @@ const Chat = () => {
     (m) =>
       m.role === 'assistant' &&
       m.parts?.some(
-        (part) =>
-          part.type === 'tool-invocation' &&
-          part.toolInvocation?.state !== 'result'
+        (part) => isToolUIPart(part) && part.state !== 'output-available'
       )
   );
 
-  //@ts-ignore
-  const submitQuery = (query) => {
+  const submitQuery = (query: string) => {
     if (!query.trim() || isToolInProgress) return;
-    
+
     // Clear any previous error message
     setErrorMessage(null);
-    
+
     // Check if this is a preset question first
     if (presetReplies[query]) {
       const preset = presetReplies[query];
-      setPresetReply({ question: query, reply: preset.reply, tool: preset.tool });
-      setLoadingSubmit(false);
+      setPresetReply({
+        question: query,
+        reply: preset.reply,
+        tool: preset.tool,
+      });
       return;
     }
-    
-    setLoadingSubmit(true);
+
     setPresetReply(null); // Clear any preset reply when submitting new query
-    append({
-      role: 'user',
-      content: query,
-    });
+    sendMessage({ text: query });
   };
 
-  //@ts-ignore
-  const submitQueryToAI = (query) => {
+  const submitQueryToAI = (query: string) => {
     if (!query.trim() || isToolInProgress) return;
-    
+
     // Clear any previous error message
     setErrorMessage(null);
-    
+
     // Force AI response, bypass preset checking
-    setLoadingSubmit(true);
     setPresetReply(null);
-    append({
-      role: 'user',
-      content: query,
-    });
+    sendMessage({ text: query });
   };
 
-  //@ts-ignore
-  const handlePresetReply = (question, reply, tool) => {
+  const handlePresetReply = (
+    question: string,
+    reply: string,
+    tool: string
+  ) => {
     setPresetReply({ question, reply, tool });
-    setLoadingSubmit(false);
   };
 
-  //@ts-ignore
-  const handleGetAIResponse = (question, tool) => {
+  const handleGetAIResponse = (question: string) => {
     setPresetReply(null);
     submitQueryToAI(question); // Use the new function that bypasses presets
   };
@@ -256,22 +251,20 @@ const Chat = () => {
     }
   }, [initialQuery, autoSubmitted]);
 
-  //@ts-ignore
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input.trim() || isToolInProgress) return;
     submitQueryToAI(input); // User input should go directly to AI
     setInput('');
   };
 
-  const handleStop = () => {
-    stop();
-    setLoadingSubmit(false);
-  };
-
   // Check if this is the initial empty state (no messages)
   const isEmptyState =
-    !currentAIMessage && !latestUserMessage && !loadingSubmit && !presetReply && !errorMessage;
+    !currentAIMessage &&
+    !latestUserMessage &&
+    !awaitingReply &&
+    !presetReply &&
+    !errorMessage;
 
   // Calculate header height based on hasActiveTool
   const headerHeight = hasActiveTool ? 100 : 180;
@@ -285,9 +278,7 @@ const Chat = () => {
         >
           <div className="flex justify-center">
             <ClientOnly>
-              <Avatar
-                hasActiveTool={hasActiveTool}
-              />
+              <Avatar hasActiveTool={hasActiveTool} />
             </ClientOnly>
           </div>
 
@@ -303,7 +294,6 @@ const Chat = () => {
                       message={latestUserMessage}
                       isLast={true}
                       isLoading={false}
-                      reload={() => Promise.resolve(null)}
                     />
                   </ChatBubbleMessage>
                 </ChatBubble>
@@ -327,8 +317,8 @@ const Chat = () => {
                 className="flex min-h-full items-center justify-center"
                 {...MOTION_CONFIG}
               >
-                <ChatLanding 
-                  submitQuery={submitQuery} 
+                <ChatLanding
+                  submitQuery={submitQuery}
                   handlePresetReply={handlePresetReply}
                 />
               </motion.div>
@@ -343,11 +333,7 @@ const Chat = () => {
                 />
               </div>
             ) : errorMessage ? (
-              <motion.div
-                key="error"
-                {...MOTION_CONFIG}
-                className="px-4 pt-4"
-              >
+              <motion.div key="error" {...MOTION_CONFIG} className="px-4 pt-4">
                 <ChatBubble variant="received">
                   <ChatBubbleMessage className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
                     <div className="space-y-4 p-4">
@@ -364,33 +350,38 @@ const Chat = () => {
                           </p>
                         </div>
                       </div>
-                      
+
                       <div className="text-sm text-amber-800 dark:text-amber-200 space-y-2">
                         <p>
-                          Hi! I'm currently using the <strong>free version</strong> of Google's Gemini API, 
-                          and today's quota has been reached.
+                          Hi! I&apos;m currently using the{' '}
+                          <strong>free version</strong> of Google&apos;s Gemini
+                          API, and today&apos;s quota has been reached.
                         </p>
-                        
+
                         <div className="bg-amber-100 dark:bg-amber-900/30 p-3 rounded-lg mt-3">
                           <p className="font-medium mb-2">What you can do:</p>
                           <ul className="list-disc list-inside space-y-1 text-xs">
                             <li>Contact me directly for a live demo</li>
-                            <li>Use the preset questions below for instant responses</li>
+                            <li>
+                              Use the preset questions below for instant
+                              responses
+                            </li>
                             <li>Come back tomorrow when the quota resets</li>
                           </ul>
                         </div>
                       </div>
-                      
+
                       <div className="flex gap-2 mt-4">
                         <button
                           onClick={() => {
                             setErrorMessage(null);
-                            const preset = presetReplies["How can I reach you?"];
+                            const preset =
+                              presetReplies['How can I reach you?'];
                             if (preset) {
-                              setPresetReply({ 
-                                question: "How can I reach you?", 
-                                reply: preset.reply, 
-                                tool: preset.tool 
+                              setPresetReply({
+                                question: 'How can I reach you?',
+                                reply: preset.reply,
+                                tool: preset.tool,
                               });
                             }
                           }}
@@ -408,7 +399,7 @@ const Chat = () => {
                           Use Presets
                         </button>
                       </div>
-                      
+
                       <p className="text-xs text-amber-600 dark:text-amber-400 text-center mt-3">
                         Thank you for your patience! 🙏
                       </p>
@@ -421,17 +412,11 @@ const Chat = () => {
                 <SimplifiedChatView
                   message={currentAIMessage}
                   isLoading={isLoading}
-                  reload={reload}
-                  addToolResult={addToolResult}
                 />
               </div>
             ) : (
-              loadingSubmit && (
-                <motion.div
-                  key="loading"
-                  {...MOTION_CONFIG}
-                  className="px-4 pt-18"
-                >
+              awaitingReply && (
+                <motion.div key="loading" {...MOTION_CONFIG} className="px-4 pt-18">
                   <ChatBubble variant="received">
                     <ChatBubbleMessage isLoading />
                   </ChatBubble>
@@ -445,23 +430,22 @@ const Chat = () => {
         <div className="chat-bottombar-container from-background via-background sticky bottom-0 bg-gradient-to-t to-transparent px-2 pt-3 md:px-0 md:pb-4">
           <div className="relative flex flex-col items-center gap-3">
             <div className="helper-boost-container">
-              <HelperBoost 
-                submitQuery={submitQuery} 
-                setInput={setInput} 
+              <HelperBoost
+                submitQuery={submitQuery}
+                setInput={setInput}
                 handlePresetReply={handlePresetReply}
               />
             </div>
             <ChatBottombar
               input={input}
-              handleInputChange={handleInputChange}
+              handleInputChange={(e) => setInput(e.target.value)}
               handleSubmit={onSubmit}
               isLoading={isLoading}
-              stop={handleStop}
+              stop={stop}
               isToolInProgress={isToolInProgress}
             />
           </div>
         </div>
-
       </div>
     </div>
   );

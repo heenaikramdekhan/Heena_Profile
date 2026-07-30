@@ -5,7 +5,7 @@ import { getConfig } from '@/lib/config-loader';
 export const getContact = tool({
   description:
     'This tool provides professional contact information and social media profiles.',
-  parameters: z.object({}),
+  inputSchema: z.object({}),
   execute: async () => {
     const config = getConfig();
     

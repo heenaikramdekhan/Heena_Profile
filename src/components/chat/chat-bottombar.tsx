@@ -1,17 +1,13 @@
 // src/components/chat/chat-bottombar.tsx
 'use client';
 
-import { ChatRequestOptions } from 'ai';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import React, { useEffect } from 'react';
 
 interface ChatBottombarProps {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: (
-    e: React.FormEvent<HTMLFormElement>,
-    chatRequestOptions?: ChatRequestOptions
-  ) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isLoading: boolean;
   stop: () => void;
   input: string;

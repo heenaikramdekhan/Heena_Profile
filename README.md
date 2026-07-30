@@ -4,8 +4,6 @@ Personal portfolio for **Heena**, Software QA Engineer and AI Engineer. She goes
 
 ## Positioning
 
-
-
 The site is built around one idea rather than two careers: quality engineering for AI systems. Heena tests AI adversarially and builds it, which is an unusual pairing. Most QA engineers can't build an agent, and most AI engineers don't think adversarially about their own output.
 
 Everything on the page serves that idea:
@@ -40,7 +38,7 @@ npx tsc --noEmit # typecheck (no test suite; tsc and build are the gates)
 | Variable | Required | Purpose |
 |---|---|---|
 | `NEXT_PUBLIC_SITE_URL` | for deployment | Canonical origin used by metadata, JSON-LD, `sitemap.ts` and `robots.ts`. Defaults to a Vercel preview host, so **set this before going live** or canonical URLs will point at the wrong origin. |
-| `GOOGLE_GENERATIVE_AI_API_KEY` | for the chat widget | Gemini key from [Google AI Studio](https://aistudio.google.com/). The static site renders fine without it. Only the assistant needs it. |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | for the chat widget | Gemini key from [Google AI Studio](https://aistudio.google.com/). `GEMINI_API_KEY` works too, since that is the name AI Studio shows. The static site renders fine without either. Only the assistant needs it. |
 | `RESEND_API_KEY` | for the contact form | [Resend](https://resend.com) API key. Without it `/api/contact` returns a clean 503 and the form shows its "email me directly" fallback. |
 | `CONTACT_TO_EMAIL` | optional | Where contact messages are delivered. Defaults to the address in `portfolio-config.json`. |
 | `CONTACT_FROM_EMAIL` | optional | Verified Resend sender. Defaults to `onboarding@resend.dev` for testing. Point it at a verified domain in production. |

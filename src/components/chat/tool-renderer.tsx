@@ -6,15 +6,25 @@ import AllProjects from '../projects/AllProjects';
 import Resume from '../resume';
 import Skills from '../skills';
 
+/**
+ * A finished tool call, flattened out of the message parts by its caller.
+ *
+ * The AI SDK types each tool part as `tool-<name>` with the payload on `output`,
+ * so the name and payload are pulled off there and handed over in this shape.
+ * Keeping the flattening in one place means the renderer stays a plain switch.
+ */
+export type RenderedTool = {
+  toolCallId: string;
+  toolName: string;
+  output: unknown;
+};
+
 interface ToolRendererProps {
-  toolInvocations: any[];
+  toolInvocations: RenderedTool[];
   messageId: string;
 }
 
-export default function ToolRenderer({
-  toolInvocations,
-  messageId,
-}: ToolRendererProps) {
+export default function ToolRenderer({ toolInvocations }: ToolRendererProps) {
   return (
     <div className="w-full transition-all duration-300">
       {toolInvocations.map((tool) => {
@@ -66,7 +76,8 @@ export default function ToolRenderer({
           case 'getInternship':
             return (
               <div key={toolCallId} className="w-full rounded-lg">
-                <AvailabilityCard data={tool.result} />
+                {/* Shaped by the tool on the server, so it already matches. */}
+                <AvailabilityCard data={tool.output as never} />
               </div>
             );
 
@@ -79,17 +90,17 @@ export default function ToolRenderer({
               >
                 <div className="mb-2 flex items-center justify-between">
                   <h3 className="text-lg font-medium">{toolName}</h3>
-                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-800 dark:bg-green-900 dark:text-green-100">
+                  <span className="bg-accent2/15 text-accent2 rounded-full px-2 py-0.5 text-xs">
                     Tool Result
                   </span>
                 </div>
                 <div className="mt-2">
-                  {typeof tool.result === 'object' ? (
+                  {typeof tool.output === 'object' ? (
                     <pre className="bg-secondary/20 overflow-x-auto rounded p-3 text-sm">
-                      {JSON.stringify(tool.result, null, 2)}
+                      {JSON.stringify(tool.output, null, 2)}
                     </pre>
                   ) : (
-                    <p>{String(tool.result)}</p>
+                    <p>{String(tool.output)}</p>
                   )}
                 </div>
               </div>

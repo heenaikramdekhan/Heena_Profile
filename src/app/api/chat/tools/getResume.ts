@@ -5,7 +5,7 @@ import { getConfig } from '@/lib/config-loader';
 export const getResume = tool({
   description:
     'This tool provides comprehensive resume information including professional experience, education, and achievements.',
-  parameters: z.object({}),
+  inputSchema: z.object({}),
   execute: async () => {
     const config = getConfig();
     

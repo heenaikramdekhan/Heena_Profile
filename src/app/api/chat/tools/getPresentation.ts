@@ -5,7 +5,7 @@ import { getConfig } from '@/lib/config-loader';
 export const getPresentation = tool({
   description:
     'This tool provides a comprehensive professional introduction and personal background, suitable for interviews and formal presentations.',
-  parameters: z.object({}),
+  inputSchema: z.object({}),
   execute: async () => {
     const config = getConfig();
     

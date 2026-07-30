@@ -4,20 +4,15 @@ import {
   ChatBubble,
   ChatBubbleMessage,
 } from '@/components/ui/chat/chat-bubble';
-import { ChatRequestOptions } from 'ai';
-import { Message } from 'ai/react';
+import { getToolName, isTextUIPart, isToolUIPart, type UIMessage } from 'ai';
 import { motion } from 'framer-motion';
 import { Transition } from 'framer-motion';
 import ChatMessageContent from './chat-message-content';
-import ToolRenderer from './tool-renderer';
+import ToolRenderer, { type RenderedTool } from './tool-renderer';
 
 interface SimplifiedChatViewProps {
-  message: Message;
+  message: UIMessage;
   isLoading: boolean;
-  reload: (
-    chatRequestOptions?: ChatRequestOptions
-  ) => Promise<string | null | undefined>;
-  addToolResult?: (args: { toolCallId: string; result: string }) => void;
 }
 
 const MOTION_CONFIG: {
@@ -39,35 +34,39 @@ const MOTION_CONFIG: {
 export function SimplifiedChatView({
   message,
   isLoading,
-  reload,
-  addToolResult,
 }: SimplifiedChatViewProps) {
   if (message.role !== 'assistant') return null;
 
-  // Extract tool invocations that are in "result" state
-  const toolInvocations =
-    message.parts
-      ?.filter(
-        (part) =>
-          part.type === 'tool-invocation' &&
-          part.toolInvocation?.state === 'result'
-      )
-      .map((part) =>
-        part.type === 'tool-invocation' ? part.toolInvocation : null
-      )
-      .filter(Boolean) || [];
+  const parts = message.parts ?? [];
+
+  /**
+   * Tool calls that have actually returned. A tool part carries its name in the
+   * part type (`tool-getSkills`) and its payload on `output`, so both are read
+   * through the SDK helpers rather than by slicing the string.
+   */
+  const finishedTools: RenderedTool[] = parts
+    .filter(isToolUIPart)
+    .filter((part) => part.state === 'output-available')
+    .map((part) => ({
+      toolCallId: part.toolCallId,
+      toolName: getToolName(part),
+      output: part.output,
+    }));
 
   // Only display the first tool (if any)
-  const currentTool = toolInvocations.length > 0 ? [toolInvocations[0]] : [];
+  const currentTool = finishedTools.slice(0, 1);
 
-  // Check if we have meaningful text content (more than just confirmations)
-  const hasTextContent = message.content.trim().length > 0;
+  // Text now lives only in the parts array, so it gets assembled here.
+  const text = parts
+    .filter(isTextUIPart)
+    .map((part) => part.text)
+    .join('')
+    .trim();
+
   const hasTools = currentTool.length > 0;
-  
-  // If we have tools, minimize text content to avoid redundancy
-  const showTextContent = hasTextContent && (!hasTools || message.content.trim().length > 50);
 
-  console.log('currentTool', currentTool);
+  // With a tool card on screen, a short lead-in line is just noise above it.
+  const showTextContent = text.length > 0 && (!hasTools || text.length > 50);
 
   return (
     <motion.div {...MOTION_CONFIG} className="flex h-full w-full flex-col px-4">
@@ -92,8 +91,6 @@ export function SimplifiedChatView({
                   message={message}
                   isLast={true}
                   isLoading={isLoading}
-                  reload={reload}
-                  addToolResult={addToolResult}
                   skipToolRendering={true}
                 />
               </ChatBubbleMessage>

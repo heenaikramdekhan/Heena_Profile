@@ -31,7 +31,7 @@ There is no test suite. **Verify any change with `npx tsc --noEmit` then `npm ru
 
 ### Environment (`.env.local`)
 
-- `GOOGLE_GENERATIVE_AI_API_KEY` — Gemini key for the chat widget. Static site renders fine without it; only the chatbot fails.
+- `GOOGLE_GENERATIVE_AI_API_KEY` — Gemini key for the chat widget. Static site renders fine without it; only the chatbot fails. `GEMINI_API_KEY` is accepted as a fallback, because that is the name Google AI Studio shows and it is what tends to get pasted into a host dashboard; the route checks the canonical name first. Both names being live is deliberate, so don't "clean up" the fallback.
 - `RESEND_API_KEY` — for `/api/contact`. Without it the route returns 503 and the form shows its fallback; nothing else breaks.
 - `CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL` — optional overrides for contact delivery (sensible defaults baked in).
 
@@ -96,7 +96,17 @@ Section indices are positional and hand-written (`about` 01 → `contact` 06). I
 
 ### API routes (`src/app/api/*`)
 
-- **`chat/route.ts`** (`POST`, `maxDuration = 30`) streams from Gemini 2.5 Flash via the AI SDK with a fixed tool set: `getProjects, getPresentation, getResume, getContact, getSkills, getInternship` (in `chat/tools/`). Each tool is an `ai` SDK `tool()` reading from `getConfig()`, returning structured data the client renders with a matching component. System prompt injected via `messages.unshift(SYSTEM_PROMPT)`. Rate-limited 20/min per IP.
+- **`chat/route.ts`** (`POST`, `maxDuration = 30`) streams from **`gemini-3.5-flash-lite`** via the AI SDK with a fixed tool set: `getProjects, getPresentation, getResume, getContact, getSkills, getInternship` (in `chat/tools/`). Each tool is an `ai` SDK `tool()` with an `inputSchema` reading from `getConfig()`, returning structured data the client renders with a matching component. The persona goes in `streamText`'s `instructions` option, **not** as a `{ role: 'system' }` message, which the SDK now rejects inside `messages`. Rate-limited 20/min per IP.
+
+#### The model and SDK version are load-bearing together (read before touching either)
+
+Three separate constraints pin this, and they were each found the hard way:
+
+1. **Gemini 2.x is unreachable on a new key.** `gemini-2.5-flash` and `-flash-lite` answer **404** "no longer available to new users" — `ListModels` still advertises them, so only an actual call reveals it. The whole 2.0 family and `gemini-2.5-pro` answer **429** with empty `FreeTier` quota values. So this has to be a Gemini 3 model. Don't "restore" 2.5-flash.
+2. **Gemini 3 tool calls require `thought_signature` round-tripping.** The model returns a signature alongside each `functionCall`, and replaying that call back without it is a hard **400 INVALID_ARGUMENT**, which kills every multi-step tool call, i.e. every real answer. `@ai-sdk/google@1.x` drops the signature and **that line is frozen at 1.2.22**, so there is no patch — the current provider is a requirement, not a nicety. Recent patches also cover *parallel* unsigned calls, which is the specific shape that failed here.
+3. **Free quota is per model per day.** `gemini-3.6-flash` burned its entire daily allowance inside one testing session, which on a public page means the widget dies by mid-morning. The lite tier has a far larger allowance and has nothing hard to do here: six parameterless tools and a fixed persona. `thinkingLevel: 'low'` is set for the same reason — left to think freely, Gemini 3 spent **95s** on one two-step answer, past the 30s `maxDuration`.
+
+Quota exhaustion is handled honestly rather than hidden: the client shows an amber "API Quota Exhausted" card pointing at the preset questions and the contact section.
 - **`contact/route.ts`** (Node runtime) validates + honeypot-checks the contact form, delivers via **Resend**, rate-limited 5/min per IP, degrades to 503 if `RESEND_API_KEY` is unset. Logs are **PII-safe** (masked IP + outcome only — never name/email/message).
 - **`src/lib/rate-limit.ts`** — shared in-memory fixed-window limiter (`rateLimit`, `getClientIp`, `maskIp`). Per-instance / resets on cold start; fine for a personal site. Swap the `Map` for Upstash Redis behind the same API if global accuracy is ever needed.
 
