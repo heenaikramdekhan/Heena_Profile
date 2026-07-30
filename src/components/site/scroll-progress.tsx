@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useScroll, useSpring, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
+import { useReducedMotionSafe } from './use-motion-preference';
 
 /**
  * Thin progress bar tracking scroll position through the page, pinned under
@@ -12,7 +13,7 @@ import { motion, useScroll, useSpring, useReducedMotion } from 'framer-motion';
  * information the page doesn't already convey.
  */
 export function ScrollProgress() {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 200,

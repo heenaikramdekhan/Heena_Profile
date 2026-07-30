@@ -28,6 +28,14 @@ import {
  * Cursor tracking is driven entirely by motion values and springs, so pointer
  * movement never triggers a React re-render. Everything interactive or moving
  * is dropped under `prefers-reduced-motion`.
+ *
+ * That last part is done in CSS (`motion-reduce:hidden`) rather than by leaving
+ * the layers out of the JSX, and the distinction matters. The server cannot know
+ * a visitor's motion preference, so it always prerenders the full set; a JS
+ * `!reduce &&` guard then removed those nodes on the very first client render
+ * and React threw a hydration mismatch, discarding and re-rendering the tree for
+ * every reduced-motion visitor. A CSS media query decides after hydration, so
+ * both sides agree on the markup. Don't convert these back to JSX conditionals.
  */
 export function AmbientBackground() {
   const reduce = useReducedMotion();
@@ -73,41 +81,35 @@ export function AmbientBackground() {
       <div className="bg-mesh-alt animate-ambient-drift-slow absolute -inset-[30%] opacity-50" />
 
       {/* 2. scan band */}
-      {!reduce && (
-        <div className="animate-scan-sweep via-brand/[0.07] absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-transparent to-transparent">
-          <div className="bg-brand/20 absolute inset-x-0 bottom-0 h-px" />
-        </div>
-      )}
+      <div className="animate-scan-sweep via-brand/[0.07] absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-transparent to-transparent motion-reduce:hidden">
+        <div className="bg-brand/20 absolute inset-x-0 bottom-0 h-px" />
+      </div>
 
       {/* 3. base dot grid */}
       <div className="bg-dot-grid absolute inset-0 opacity-40" />
 
-      {/* 4. dots lit under the cursor */}
-      {!reduce && (
-        <motion.div
-          className="bg-dot-grid-lit absolute inset-0 transition-opacity duration-500"
-          style={{
-            maskImage: spotlightMask,
-            WebkitMaskImage: spotlightMask,
-            opacity: active ? 1 : 0,
-          }}
-        />
-      )}
+      {/* 4. dots lit under the cursor. The pointer listener never attaches under
+             reduced motion, so `active` stays false and this sits at opacity 0
+             regardless; `motion-reduce:hidden` makes that explicit. */}
+      <motion.div
+        className="bg-dot-grid-lit absolute inset-0 transition-opacity duration-500 motion-reduce:hidden"
+        style={{
+          maskImage: spotlightMask,
+          WebkitMaskImage: spotlightMask,
+          opacity: active ? 1 : 0,
+        }}
+      />
 
       {/* 5. cursor glow — a wide accent halo under a tighter brand core, so
              the light has falloff instead of reading as a flat disc */}
-      {!reduce && (
-        <>
-          <motion.div
-            className="absolute inset-0 transition-opacity duration-500"
-            style={{ backgroundImage: halo, opacity: active ? 1 : 0 }}
-          />
-          <motion.div
-            className="absolute inset-0 transition-opacity duration-500"
-            style={{ backgroundImage: glow, opacity: active ? 1 : 0 }}
-          />
-        </>
-      )}
+      <motion.div
+        className="absolute inset-0 transition-opacity duration-500 motion-reduce:hidden"
+        style={{ backgroundImage: halo, opacity: active ? 1 : 0 }}
+      />
+      <motion.div
+        className="absolute inset-0 transition-opacity duration-500 motion-reduce:hidden"
+        style={{ backgroundImage: glow, opacity: active ? 1 : 0 }}
+      />
 
       {/* 6. grain + contrast scrim */}
       <div className="bg-noise absolute inset-0 opacity-[0.035] dark:opacity-[0.05]" />

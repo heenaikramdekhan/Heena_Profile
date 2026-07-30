@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { useReducedMotionSafe } from './use-motion-preference';
 import { Tilt, TiltContent } from '@/components/animate-ui/primitives/effects/tilt';
 
 /**
@@ -17,7 +18,7 @@ export function Magnetic({
   className?: string;
   strength?: number;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 200, damping: 15, mass: 0.3 });
@@ -59,7 +60,7 @@ export function HoverLift({
   className?: string;
   y?: number;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   return (
     <motion.div
       whileHover={reduce ? undefined : { y }}
@@ -95,7 +96,7 @@ export function TiltCard({
   className?: string;
   maxTilt?: number;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
 
   if (reduce) return <div className={className}>{children}</div>;
 

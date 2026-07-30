@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
+import { useReducedMotionSafe } from './use-motion-preference';
 import { cn } from '@/lib/utils';
 
 /**
@@ -54,7 +55,7 @@ export function TagRow({
   children: React.ReactNode;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
 
   if (reduce) {
     return <div className={cn('flex flex-wrap gap-1.5', className)}>{children}</div>;
@@ -80,7 +81,7 @@ export function Tag({
   children: React.ReactNode;
   tone?: TagTone;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
 
   if (reduce) {
     return <span className={tagClass(tone, false)}>{children}</span>;

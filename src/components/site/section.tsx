@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotionSafe } from './use-motion-preference';
 import { cn } from '@/lib/utils';
 
 /**
@@ -17,7 +18,7 @@ export function Reveal({
   className?: string;
   delay?: number;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
 
   if (reduce) {
     return <div className={className}>{children}</div>;
@@ -43,7 +44,7 @@ export function Reveal({
  * doing visual work (separating the eyebrow from the page) beyond the motion.
  */
 function HeadingRule() {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
 
   if (reduce) {
     return <span className="via-border h-px flex-1 bg-gradient-to-r from-brand/40 to-transparent" />;

@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotionSafe } from './use-motion-preference';
 import { ArrowUp, Github, Linkedin, Mail } from 'lucide-react';
 import { getConfig } from '@/lib/config-loader';
 import { Reveal } from './section';
@@ -9,7 +10,7 @@ import { iconButtonClass } from './button-styles';
 
 export function Footer() {
   const { personal, social } = getConfig();
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   const year = new Date().getFullYear();
 
   const socials = [

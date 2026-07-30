@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ReactLenis, useLenis } from 'lenis/react';
-import { useReducedMotion } from 'framer-motion';
+import { useReducedMotionSafe } from './use-motion-preference';
 import 'lenis/dist/lenis.css';
 
 /**
@@ -82,7 +82,7 @@ function AnchorScroll() {
 }
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
 
   // Only suppress native smooth scrolling while Lenis is actually driving.
   React.useEffect(() => {

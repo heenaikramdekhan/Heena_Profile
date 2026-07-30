@@ -3,12 +3,12 @@
 import React from 'react';
 import {
   motion,
-  useReducedMotion,
   useMotionValue,
   useSpring,
   useTransform,
   Variants,
 } from 'framer-motion';
+import { useReducedMotionSafe } from './use-motion-preference';
 import { ArrowUpRight, ChevronDown, Github, Linkedin, Mail, FileDown } from 'lucide-react';
 import { getConfig } from '@/lib/config-loader';
 import { primaryButtonClass, secondaryButtonClass, quietButtonClass, iconButtonClass } from './button-styles';
@@ -60,7 +60,7 @@ const CAPTION: Record<Mode, string> = {
 };
 
 function SystemGraph() {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   const [mode, setMode] = React.useState<Mode>('build');
   // Once the visitor chooses a lens, stop cycling and respect the choice.
   const [pinned, setPinned] = React.useState(false);
@@ -248,7 +248,7 @@ function SystemGraph() {
 
 export function Hero() {
   const { personal, social, resume } = getConfig();
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
 
   // Whole-block parallax: the text column drifts a few px opposite the
   // cursor. Deliberately tiny (max ~6px) — this is a premium-feeling nudge,

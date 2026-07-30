@@ -10,7 +10,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
-import { useReducedMotion } from 'framer-motion';
+import { useReducedMotionSafe } from './use-motion-preference';
 import { ImageZoom } from '@/components/animate-ui/primitives/effects/image-zoom';
 import { getConfig } from '@/lib/config-loader';
 import type { Certification } from '@/types/portfolio';
@@ -94,9 +94,7 @@ function Mark({ cert }: { cert: Certification }) {
  * card shares one silhouette so grid rows line up.
  */
 function MediaPanel({ cert }: { cert: Certification }) {
-  // useReducedMotion returns boolean | null; null means "not measured yet",
-  // which for our purposes is the same as "motion allowed".
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotionSafe();
 
   if (cert.image) {
     return (

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotionSafe } from './use-motion-preference';
 import {
   ArrowUpRight,
   Github,
@@ -29,7 +30,7 @@ const inputClass =
 function ContactForm() {
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

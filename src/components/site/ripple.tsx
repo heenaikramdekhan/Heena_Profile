@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useReducedMotion } from 'framer-motion';
+import { useReducedMotionSafe } from './use-motion-preference';
 import {
   RippleButton,
   RippleButtonRipples,
@@ -38,7 +38,7 @@ export function Ripple({
   children: React.ReactElement;
   tone?: Tone;
 }) {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotionSafe();
 
   // A ripple is purely decorative motion, so it is dropped entirely rather
   // than shortened. The element passes through untouched.

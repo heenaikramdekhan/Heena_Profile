@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotionSafe } from './use-motion-preference';
 import { FileDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getConfig } from '@/lib/config-loader';
@@ -22,7 +23,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [active, setActive] = React.useState('');
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);

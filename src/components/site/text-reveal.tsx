@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
+import { useReducedMotionSafe } from './use-motion-preference';
 
 /**
  * Word-by-word reveal as a block of copy scrolls into view.
@@ -46,7 +47,7 @@ export function TextReveal({
   text: string;
   className?: string;
 }) {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotionSafe();
 
   if (reduce) return <p className={className}>{text}</p>;
 
